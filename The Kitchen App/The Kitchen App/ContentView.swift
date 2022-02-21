@@ -15,16 +15,6 @@ struct ContentView: View {
                 })
             }
         }
-        /*
-        VStack {
-            Text("Pantry")
-                .font(.title)
-                .multilineTextAlignment(.center)
-                .padding()
-            Divider()
-            Text("Ingredients:")
-        }
-    */
     }
 }
 

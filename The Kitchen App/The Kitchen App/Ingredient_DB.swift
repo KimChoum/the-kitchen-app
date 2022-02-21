@@ -7,6 +7,7 @@
 
 import Foundation
 import SQLite
+import SwiftUI
 
 
 class Ingredient_DB{
@@ -60,6 +61,7 @@ class Ingredient_DB{
         }
     }
     
+    
     //return array of ingredients
     public func getIngredients() -> [Ingredient] {
         
@@ -67,7 +69,7 @@ class Ingredient_DB{
         var ingredientsList: [Ingredient] = []
          
         //get ingredients in order of in stock
-        ingredients = ingredients.order(name.asc)
+        ingredients = ingredients.order(inStock.desc, name.asc)
         
         do{
             
@@ -86,6 +88,17 @@ class Ingredient_DB{
             print(error.localizedDescription)
         }
         return ingredientsList
+    }
+    
+    public func numberOfIngredients() -> Int{
+        var count: Int = 0
+        do{
+            count = try db.scalar(ingredients.filter(inStock == true).count)
+            // SELECT count(*) FROM "users"
+        } catch{
+            print(error.localizedDescription)
+        }
+        return count
     }
     
 }
