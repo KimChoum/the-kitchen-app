@@ -4,7 +4,7 @@
 //
 //  Created by Dean Stirrat on 2/16/22.
 //
-
+import SQLite
 import SwiftUI
 
 @main

@@ -4,13 +4,27 @@
 //
 //  Created by Dean Stirrat on 2/16/22.
 //
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        
+        NavigationView{
+            VStack{
+                NavigationLink (destination: PantryView(), label: { Text("Pantry")
+                })
+            }
+        }
+        /*
+        VStack {
+            Text("Pantry")
+                .font(.title)
+                .multilineTextAlignment(.center)
+                .padding()
+            Divider()
+            Text("Ingredients:")
+        }
+    */
     }
 }
 
