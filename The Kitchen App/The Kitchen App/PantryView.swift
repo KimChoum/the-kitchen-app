@@ -31,7 +31,6 @@ struct PantryView: View {
                         Text(model.inStock ? "In Stock" : "Not in Stock")
                     }
                 }.padding()
-                
                 NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient")
                         .padding()
                 })

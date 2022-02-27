@@ -8,6 +8,7 @@
 import Foundation
 
 class Ingredient: Identifiable{
+    public var id = UUID()
     public var name: String = ""
     public var inStock: Bool = false
 }

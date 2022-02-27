@@ -19,6 +19,7 @@ class Ingredient_DB{
     //Table column instances:
     private var name: Expression<String>!
     private var inStock: Expression<Bool>!
+    //private var id: Expression<Int64>!
     
     init(){
         
@@ -36,15 +37,17 @@ class Ingredient_DB{
             //initialize columns
             name = Expression<String>("name")
             inStock = Expression<Bool>("inStock")
+            //id = Expression<Int64>("id")
             //if if table already exists:
-            if(!UserDefaults.standard.bool(forKey: "is_db_created")){
+            if(!UserDefaults.standard.bool(forKey: "is_ingredient_db_created")){
                 //case that table does not exist yet
                 try db.run(ingredients.create { (t) in
                     t.column(name, primaryKey: true)
                     t.column(inStock)
+                    //t.column(id, primaryKey: true)
                 })
                 //make is_db_created true so table is not created again
-                UserDefaults.standard.set(true, forKey: "is_db_created")
+                UserDefaults.standard.set(true, forKey: "is_ingredient_db_created")
             }
         } catch{
             print(error.localizedDescription)
@@ -99,6 +102,37 @@ class Ingredient_DB{
             print(error.localizedDescription)
         }
         return count
+    }
+    
+    
+    public func getRecipeIngredients(ingredientsList: [String]) -> [Ingredient]{
+        //empty array
+        print("initializeing ingredients list that will be returned")
+        var ingredientsListReturn: [Ingredient] = []
+         
+        //get ingredients in order of in stock
+        //ingredients = ingredients.order(inStock.desc, name.asc)
+        print("looping over ingredientsList given")
+        for ingredientNameToGet in ingredientsList {
+        
+            do{
+            print("about to try and query ingredients")
+            for ingredientItem in try db.prepare(ingredients.filter(name == ingredientNameToGet)) {
+                
+                //create ingredient object for each loop iteration
+                let ingredientReturn: Ingredient = Ingredient()
+                //set values of ingredient object to that of querried ingredient
+                ingredientReturn.name = ingredientItem[name]
+                print(ingredientItem[name])
+                ingredientReturn.inStock = ingredientItem[inStock]
+                //append object to array
+                ingredientsListReturn.append(ingredientReturn)
+            }
+            } catch{
+                print(error.localizedDescription)
+            }
+        }
+        return ingredientsListReturn
     }
     
 }

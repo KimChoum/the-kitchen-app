@@ -29,6 +29,7 @@ struct AddIngredientView: View {
             //create entry to enable in stock
             Toggle(isOn: $inStock) {
                 Text("In stock")
+                    .padding(.leading)
             }
             
             //button to create new row in db
