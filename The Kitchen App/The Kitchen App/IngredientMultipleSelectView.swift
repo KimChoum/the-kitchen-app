@@ -27,7 +27,8 @@ struct IngredientMultipleSelectView: View {
             self.ingredients = Ingredient_DB().getIngredients()
             })
         
-        Button(action: {
+        NavigationLink(destination: CookbookView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
+
             //add all selected ingredients to junction table
             for ingredientValue in ingredients{
                 //if currently selected add to junction table
@@ -36,11 +37,7 @@ struct IngredientMultipleSelectView: View {
                 }
             }
             //call function to add new row in sqlite
-            
             Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
-            //go back to homepage
-            self.mode.wrappedValue.dismiss()
-        }, label: {Text("Add ingredient")
         })
     }
 }

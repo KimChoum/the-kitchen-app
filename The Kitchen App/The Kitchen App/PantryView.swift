@@ -14,7 +14,7 @@ struct PantryView: View {
     @State var inStockNum: Int = 0
     
     var body: some View {
-        NavigationView{
+        //NavigationView{
             VStack{
                 //List Number of ingredients in stock
                 HStack {
@@ -40,7 +40,7 @@ struct PantryView: View {
                 self.inStockNum = Ingredient_DB().numberOfIngredients()
                     self.ingredients = Ingredient_DB().getIngredients()
                 })
-        }
+        //}
     }
 }
 

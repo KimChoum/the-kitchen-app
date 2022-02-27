@@ -19,7 +19,7 @@ struct AddRecipeView: View {
     //@Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     var body: some View {
-        NavigationView{
+        //NavigationView{
             VStack{
                 //create name entry field:
                 Text("Enter Recipe Name:")
@@ -42,23 +42,18 @@ struct AddRecipeView: View {
                 .shadow(radius: 1)
                 .padding(10)
                 
-                Button(action: {
-                    //create Recipe object with given values
-                    //var newRecipe: Recipe = Recipe()
+                //go to multiple select view for ingridient additions
+                NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients")}).simultaneousGesture(TapGesture().onEnded{
                     self.newRecipe.name = name
-                    self.newRecipe.instructions = instructions},
-                    label: {Text("Create Recipe")})
-                
-                
-                    //go to multiple select view for ingridient additions
-                NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients")})
+                    self.newRecipe.instructions = instructions
+                })
                        //label: {Text("Add Ingredient")})
             }
             .background(Color(.systemGray6))
             .onAppear(perform: {
                 self.ingredients = Ingredient_DB().getIngredients()
                 })
-        }
+        //}
     }
 }
 
