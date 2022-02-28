@@ -45,11 +45,9 @@ struct AddRecipeView: View {
                     }
                     .shadow(radius: 1)
                     
-                    NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients").font(.body)})
+                    NavigationLink(destination: IngredientMultipleSelectView(recipeName: $name, recipeInstructions: $instructions, ingredients: self.ingredients), label: { Text("Add Ingredients").font(.body)})
                         .padding(10)
                         .simultaneousGesture(TapGesture().onEnded{
-                        self.newRecipe.name = name
-                        self.newRecipe.instructions = instructions
                     })
                 }
                 //go to multiple select view for ingridient additions

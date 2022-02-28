@@ -9,9 +9,10 @@ import SwiftUI
 
 struct IngredientMultipleSelectView: View {
     //Name of recipe recived from previous view
-    @Binding var recipeValue: Recipe
+    @Binding var recipeName: String
+    @Binding var recipeInstructions: String
     
-    
+    @State var recipeValue: Recipe = Recipe()
     @State var selectedRows = Set<UUID>()
     @State var ingredients: [Ingredient]
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -28,6 +29,9 @@ struct IngredientMultipleSelectView: View {
             })
         
         NavigationLink(destination: CookbookView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
+            
+            recipeValue.instructions = recipeInstructions
+            recipeValue.name = recipeName
 
             //add all selected ingredients to junction table
             for ingredientValue in ingredients{
@@ -43,8 +47,9 @@ struct IngredientMultipleSelectView: View {
 }
 
 struct IngredientMultipleSelectView_Previews: PreviewProvider {
-    @State static var recipeValue: Recipe = Recipe()
+    @State static var recipeName: String = ""
+    @State static var recipeInstructions: String = ""
     static var previews: some View {
-        IngredientMultipleSelectView(recipeValue: $recipeValue, ingredients: [Ingredient()])
+        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, ingredients: [Ingredient()])
     }
 }
