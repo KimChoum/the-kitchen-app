@@ -81,11 +81,24 @@ class Recipe_Ingredient_DB{
         return ingredientsList
     }
     
-    //function to delete all recipe->ingredient relations for a given recipe
+    
+    
+    //function to delete all recipe->ingredient relations for a given RECIPE
     public func deleteRecipe(recipeNameValue: String){
         do{
             //for recipe_ingredient_row in try db.prepare(recipe_ingredient.where(recipeName == recipeNameValue)) {
             let recipe_ingredient_table: Table = recipe_ingredient.filter(recipeNameValue == recipeName)
+            try db.run(recipe_ingredient_table.delete())
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    //function to delete all recipe->ingredient relations for a given INGREDIENT
+    public func deleteIngredient(ingredient: Ingredient){
+        do{
+            let ingredientNameValue = ingredient.name
+            let recipe_ingredient_table: Table = recipe_ingredient.filter(ingredientNameValue == ingredientName)
             try db.run(recipe_ingredient_table.delete())
         }catch{
             print(error.localizedDescription)

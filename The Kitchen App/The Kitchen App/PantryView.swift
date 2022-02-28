@@ -15,34 +15,45 @@ struct PantryView: View {
     
     var body: some View {
         //NavigationView{
-            VStack{
-                //List Number of ingredients in stock
-                HStack {
-                    Text("Ingredients in stock:")
-                    Text(String(self.inStockNum))
-                        .background((self.inStockNum>0) ? Color.green : Color.red)
-                }
-                Divider()
-                //List to show ingredients:
-                List(self.ingredients) { (model) in
+            List{
+                //Add ingredient link
+                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient")
+                        .padding()
+                })
+                //print each ingredient
+                ForEach(self.ingredients) { model in
                     HStack{
                         Text(model.name)
                         Spacer()
                         Text(model.inStock ? "In Stock" : "Not in Stock")
+                            .foregroundColor(model.inStock ? .green : .red)
+                        Button(action: {
+                            let ingredientDB: Ingredient_DB = Ingredient_DB()
+                            ingredientDB.deleteIngredient(ingredient: model)
+                            //TODO Remove ingredient from Recipe_Igredient_DB
+                            let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
+                            recipeIngredientDB.deleteIngredient(ingredient: model)
+                            //reload from DB
+                            self.inStockNum = Ingredient_DB().numberOfIngredients()
+                            self.ingredients = Ingredient_DB().getIngredients()
+                        }, label: {
+                            Text("Delete")
+                                .foregroundColor(.red)
+                        })
+                            .buttonStyle(PlainButtonStyle())
                     }
-                }.padding()
-                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient")
-                        .padding()
-                })
+                }
             }
             //load data to array
             .onAppear(perform: {
                 self.inStockNum = Ingredient_DB().numberOfIngredients()
-                    self.ingredients = Ingredient_DB().getIngredients()
+                self.ingredients = Ingredient_DB().getIngredients()
                 })
-        //}
-    }
+                
+        }
+
 }
+
 
 struct PantryView_Previews: PreviewProvider {
     static var previews: some View {

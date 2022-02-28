@@ -22,32 +22,43 @@ struct AddRecipeView: View {
         //NavigationView{
             VStack{
                 //create name entry field:
-                Text("Enter Recipe Name:")
-                TextField("name", text: $name)
-                    .padding(10)
-                    .cornerRadius(5)
-                    .disableAutocorrection(true)
-                    .background(Color(.white))
+                List{
+                    Text("Enter Recipe Name:")
+                        .font(.title)
+                    ZStack{
+                        TextField("name", text: $name)
+                            .padding(10)
+                            .cornerRadius(5)
+                            .disableAutocorrection(true)
+                            .background(Color(.white))
+                    }
+                    .shadow(radius: 1)
                 //create instructions entry field
-                Text("Enter Instructions:")
-                ZStack{
-                TextEditor(text: $instructions)
-                    Text(instructions)
-                        .opacity(0)
-                        //.padding(10)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(5)
-//                    .disableAutocorrection(true)
+                //List{
+                    Text("Enter Instructions:")
+                        .font(.title)
+                    ZStack{
+                        TextEditor(text: $instructions)
+                        Text(instructions)
+                            .opacity(0)
+                            .padding(.all, 8)
+                    }
+                    .shadow(radius: 1)
+                    
+                    NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients").font(.body)})
+                        .padding(10)
+                        .simultaneousGesture(TapGesture().onEnded{
+                        self.newRecipe.name = name
+                        self.newRecipe.instructions = instructions
+                    })
                 }
-                .shadow(radius: 1)
-                .padding(10)
-                
                 //go to multiple select view for ingridient additions
-                NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients")}).simultaneousGesture(TapGesture().onEnded{
-                    self.newRecipe.name = name
-                    self.newRecipe.instructions = instructions
-                })
-                       //label: {Text("Add Ingredient")})
+//                NavigationLink(destination: IngredientMultipleSelectView(recipeValue: self.$newRecipe, ingredients: self.ingredients), label: { Text("Add Ingredients").font(.body)})
+//                    .padding(10)
+//                    .simultaneousGesture(TapGesture().onEnded{
+//                    self.newRecipe.name = name
+//                    self.newRecipe.instructions = instructions
+//                })
             }
             .background(Color(.systemGray6))
             .onAppear(perform: {

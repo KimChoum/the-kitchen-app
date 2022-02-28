@@ -11,8 +11,8 @@ struct ContentView: View {
         
         NavigationView{
             VStack{
-                NavigationLink (destination: CookbookView(), label: {Text("Cookbook")})
-                NavigationLink (destination: PantryView(), label: { Text("Pantry")})
+                NavigationLink (destination: CookbookView(), label: {Text("Recipes")})
+                NavigationLink (destination: PantryView(), label: { Text("Ingredients")})
             }
         }
     }

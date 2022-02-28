@@ -135,4 +135,18 @@ class Ingredient_DB{
         return ingredientsListReturn
     }
     
+    //function to delete an ingredient from the databse
+    public func deleteIngredient(ingredient: Ingredient){
+        do{
+            let ingredientName = ingredient.name
+            //get recipe using name
+            let ingredient: Table = ingredients.filter(name == ingredientName)
+            
+            //delete recipe by running the delete query
+            try db.run(ingredient.delete())
+        } catch{
+            print(error.localizedDescription)
+        }
+    }
+    
 }

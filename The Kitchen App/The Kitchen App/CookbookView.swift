@@ -18,10 +18,7 @@ struct CookbookView: View {
     @State var selectedRecipeName: String = ""
     
     var body: some View {
-        //NavigationView{
             VStack{
-                //List Number of ingredients in stock
-                Divider()
                 //navigation link to view recipe view
                 NavigationLink (destination: viewRecipeView(name: self.$selectedRecipeName), isActive: self.$recipeSelected){
                     EmptyView()
@@ -47,7 +44,6 @@ struct CookbookView: View {
                     self.recipes = Recipe_DB().getRecipes()
                 })
             .navigationBarTitle("Recipes")
-        //}
     }
 }
 

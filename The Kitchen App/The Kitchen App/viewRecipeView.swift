@@ -47,15 +47,12 @@ struct viewRecipeView: View {
                     )
                 }
             }//end of HStack
-            HStack{
-            Text(name).font(.title)
-                .padding()
-            Spacer()
-            }
             Text("Instructions:")
+                .font(.title)
             Text(instructions)
                 .padding()
             Text("Ingredients:")
+                .font(.title)
             List(self.ingredients) { (model) in
                 HStack{
                     Text(model.name)
@@ -78,6 +75,7 @@ struct viewRecipeView: View {
             self.instructions = recipeModel.instructions
             self.ingredients = listOfIngredients
         })
+        .navigationBarTitle(self.name)
     }
 }
 
