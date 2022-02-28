@@ -28,7 +28,7 @@ struct IngredientMultipleSelectView: View {
             self.ingredients = Ingredient_DB().getIngredients()
             })
         
-        NavigationLink(destination: CookbookView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
+        NavigationLink(destination: ContentView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
             
             recipeValue.instructions = recipeInstructions
             recipeValue.name = recipeName

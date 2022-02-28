@@ -59,6 +59,8 @@ struct viewRecipeView: View {
                     Spacer()
                     Text(model.inStock ? "In Stock" : "Not in Stock")
                 }
+                .background(Color(model.inStock ? .green : .red))
+                //.padding()
             }.padding()
         }
         //populate instructions and ingredient variables
