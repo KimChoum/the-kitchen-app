@@ -21,38 +21,15 @@ struct viewRecipeView: View {
     //To return to previous view
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
-        VStack {
-            HStack{
-                Spacer()
-                Button("Delete") {
-                            showingAlert = true
-                }
-                .padding()
-                .alert(isPresented:$showingAlert) {
-                    Alert(
-                        title: Text("Are you sure you want to delete this?"),
-                        message: Text("There is no undo"),
-                        primaryButton: .destructive(Text("Delete")) {
-                            print("Deleting...")
-                            //TODO Remove recipe from Recipe_DB
-                            let recipeDB: Recipe_DB = Recipe_DB()
-                            recipeDB.deleteRecipe(recipeName: self.name)
-                            //TODO Remove recipe from Recipe_Igredient_DB
-                            let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-                            recipeIngredientDB.deleteRecipe(recipeNameValue: self.name)
-                            //return to previous screen
-                            self.mode.wrappedValue.dismiss()
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
-            }//end of HStack
+        VStack(alignment: .leading) {
             Text("Instructions:")
                 .font(.title)
+                .padding(.leading, 5)
             Text(instructions)
                 .padding()
             Text("Ingredients:")
                 .font(.title)
+                .padding(.leading, 5)
             List(self.ingredients) { (model) in
                 HStack{
                     Text(model.name)
@@ -77,6 +54,33 @@ struct viewRecipeView: View {
             self.instructions = recipeModel.instructions
             self.ingredients = listOfIngredients
         })
+        .navigationBarItems(trailing:
+        HStack{
+            Spacer()
+            Button("Delete") {
+                        showingAlert = true
+            }
+            .padding()
+            .alert(isPresented:$showingAlert) {
+                Alert(
+                    title: Text("Are you sure you want to delete this?"),
+                    message: Text("There is no undo"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        print("Deleting...")
+                        //TODO Remove recipe from Recipe_DB
+                        let recipeDB: Recipe_DB = Recipe_DB()
+                        recipeDB.deleteRecipe(recipeName: self.name)
+                        //TODO Remove recipe from Recipe_Igredient_DB
+                        let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
+                        recipeIngredientDB.deleteRecipe(recipeNameValue: self.name)
+                        //return to previous screen
+                        self.mode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+        }//end of HStack
+        )
         .navigationBarTitle(self.name)
     }
 }
