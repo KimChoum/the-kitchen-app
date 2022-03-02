@@ -25,7 +25,7 @@ struct AddIngredientView: View {
                 .padding(10)
                 .background(Color(.systemGray6))
                 .cornerRadius(5)
-                .disableAutocorrection(true)
+                //.disableAutocorrection(true)
             //create entry to enable in stock
             Toggle(isOn: $inStock) {
                 Text("In stock")

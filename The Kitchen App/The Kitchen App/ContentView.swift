@@ -7,6 +7,18 @@
 import SwiftUI
 import Drawer
 
+extension Color {
+  init(_ hex: UInt, alpha: Double = 1) {
+    self.init(
+      .sRGB,
+      red: Double((hex >> 16) & 0xFF) / 255,
+      green: Double((hex >> 8) & 0xFF) / 255,
+      blue: Double(hex & 0xFF) / 255,
+      opacity: alpha
+    )
+  }
+}
+
 struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -25,9 +37,9 @@ struct GrowingButton: ButtonStyle {
 struct IngredientButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            //.padding([.bottom], 110)
-            //.background(Color.blue)
-            //.background(Color(model.inStock ? calmGreen : .red))
+        //.padding([.bottom], 110)
+        //.background(Color.blue)
+        //.background(Color(model.inStock ? calmGreen : .red))
             .foregroundColor(.white)
             .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
@@ -48,9 +60,14 @@ struct navigateButton: ButtonStyle {
 }
 
 struct ContentView: View {
+
     //list of colors to be used
-    let calmGreen = UIColor(red: 0.23, green: 0.8, blue: 0.5, alpha: 1)
-    let calmGreen2 = Color(red: 0.23, green: 0.8, blue: 0.5)
+    //UIColor(Color(0x49393B))
+    let backGroundColor = UIColor(Color.white)
+    let labelColor = UIColor(Color(0x1F271B))
+    let inStockColor = UIColor(Color(0x6aab7d))
+    let outOfStockColor = UIColor(Color(0xEE6352))
+    let accentColor = UIColor(Color(0xFCF6B1))
     //variables for Ingredient list:
     @State var ingredients: [Ingredient] = []
     @State var inStockNum: Int = 0
@@ -71,20 +88,23 @@ struct ContentView: View {
     @State var selectedIngredientName: String = ""
     
     var body: some View {
-        
         NavigationView{
             ZStack{
+                Color(backGroundColor)
                 ScrollView{
                     VStack{
                         //Ingredient Section
                         HStack{
                             Text("Ingredients")
                                 .font(.title)
+                                .foregroundColor(Color(labelColor))
                             Spacer()
                             //Add ingredient link
-                            NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient")
-                                    .padding(8)
+                            NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
+                                    .padding(.trailing, 8)
                             })}
+                        .padding(.top, 40)
+                        .background(Color(backGroundColor))
                         ScrollView(.vertical){
                             VStack{
                                 //navigation link to view all ingredients
@@ -97,66 +117,43 @@ struct ContentView: View {
                                 }
                                 //print each ingredient
                                 ForEach(self.ingredients) { ingredientModel in
-                                    Button(action: {
-                                        self.selectedIngredientName = ingredientModel.name
-                                        self.ingredientSelected = true
-                                    }, label: {
-                                        HStack{
-                                        Text(ingredientModel.name)
-                                                .padding()
-                                                .font(.headline)
-                                                .foregroundColor(.black)
-                                            Spacer()
-                                        }
-                                        .background(Color(ingredientModel.inStock ? calmGreen : .red))
-                                        .foregroundColor(.white)
-                                        .clipShape(Capsule())
-                                    })
-//                                    HStack{
-//                                        Text(model.name)
-//                                            .frame(width: 300, height: 45)
-//                                            .background(Color(model.inStock ? calmGreen : .red))
-//                                            .foregroundColor(.white)
-//                                            .clipShape(Capsule())
-//                                        Spacer()
-//                                        //Text(model.inStock ? "In Stock" : "Not in Stock")
-//                                        //    .foregroundColor(model.inStock ? .green : .red)
-//                                        Button(action: {
-//                                            let ingredientDB: Ingredient_DB = Ingredient_DB()
-//                                            ingredientDB.deleteIngredient(ingredient: model)
-//                                            //TODO Remove ingredient from Recipe_Igredient_DB
-//                                            let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-//                                            recipeIngredientDB.deleteIngredient(ingredient: model)
-//                                            //reload from DB
-//                                            self.inStockNum = Ingredient_DB().numberOfIngredients()
-//                                            self.ingredients = Ingredient_DB().getIngredients()
-//                                        }, label: {
-//                                            Text("Delete")
-//                                                .foregroundColor(.red)
-//                                        })
-//                                            .buttonStyle(PlainButtonStyle())
-//                                            .padding()
-//                                    }
+                                    HStack{
+                                        Button(action: {
+                                            self.selectedIngredientName = ingredientModel.name
+                                            self.ingredientSelected = true
+                                        }, label: {
+                                            Text(ingredientModel.name)
+                                                .frame(maxWidth: 350, minHeight: 35, alignment: .leading)
+                                                .foregroundColor(Color(labelColor))
+                                                .background(Color(ingredientModel.inStock ? inStockColor : outOfStockColor))
+                                                .clipShape(RoundedRectangle(cornerRadius: 7))
+                                                //.border(Color(labelColor))
+                                        })
+                                    }
                                 }
                                 Button(action: {self.viewAllIngredientsSelected = true}, label: {Text("View All Ingredient")})
+                                
                             }
                         }
                         .onAppear(perform: {
                             self.inStockNum = Ingredient_DB().numberOfIngredients()
                             self.ingredients = Ingredient_DB().getIngredients()
                         })
-                        .frame(height: 200)
+                        .frame(maxHeight: 200)
                         
                         
                         //Recipe Section
                         HStack{
                             //button to view all recipes
-                            Button(action: {self.viewAllRecipesSelected = true}, label: {Text("Recipes").font(.title).foregroundColor(.black)})
+                            Button(action: {self.viewAllRecipesSelected = true}, label: {Text("Recipes").font(.title).foregroundColor(Color(labelColor))})
                             //Text("Recipes")
                             //    .font(.title)
                             Spacer()
                             NavigationLink (destination: AddRecipeView(), label: { Text("Add Recipe")
-                            }).padding(8)}
+                                    .foregroundColor(Color(labelColor))
+                            }).padding(8)
+                        }
+                        .background(Color(backGroundColor))
                         
                         VStack{
                             //navigation link to view recipe view details
@@ -184,9 +181,9 @@ struct ContentView: View {
                                             Text(recipeModel.name)
                                                 .padding()
                                                 .font(.headline)
-                                                .background(Color(.white)
+                                                .background(Color(inStockColor)
                                                                 .clipShape(Capsule()))
-                                                .foregroundColor(.black)
+                                                .foregroundColor(Color(labelColor))
                                             Spacer()
                                             //Text("TODO: Have the ingredients?")
                                         }.padding()
@@ -202,12 +199,13 @@ struct ContentView: View {
                         })
                         .frame(height: 350)
                     }
-                    .navigationBarTitle(Text("My Kitchen"))
+                    //.navigationBarTitle(Text("My Kitchen")).navigationBarHidden(false)
                 }//end of scrollview
-                Drawer(heights: .constant([50, 340])) {
-                        Color.blue
-                }.edgesIgnoringSafeArea(.vertical)
+//                Drawer(heights: .constant([50, 340])) {
+//                    Color(backGroundColor)
+//                }.edgesIgnoringSafeArea(.vertical)
             }
+            .edgesIgnoringSafeArea(.vertical)
         }
     }
 }
