@@ -22,6 +22,19 @@ struct GrowingButton: ButtonStyle {
     }
 }
 
+struct IngredientButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            //.padding([.bottom], 110)
+            //.background(Color.blue)
+            //.background(Color(model.inStock ? calmGreen : .red))
+            .foregroundColor(.white)
+            .clipShape(Capsule())
+            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+    }
+}
+
 struct navigateButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -37,6 +50,7 @@ struct navigateButton: ButtonStyle {
 struct ContentView: View {
     //list of colors to be used
     let calmGreen = UIColor(red: 0.23, green: 0.8, blue: 0.5, alpha: 1)
+    let calmGreen2 = Color(red: 0.23, green: 0.8, blue: 0.5)
     //variables for Ingredient list:
     @State var ingredients: [Ingredient] = []
     @State var inStockNum: Int = 0
@@ -51,6 +65,10 @@ struct ContentView: View {
     @State var selectedRecipeName: String = ""
     //if view all is selected
     @State var viewAllRecipesSelected: Bool = false
+    
+    //variable to see if ingredient has been clicked on
+    @State var ingredientSelected: Bool = false
+    @State var selectedIngredientName: String = ""
     
     var body: some View {
         
@@ -69,36 +87,56 @@ struct ContentView: View {
                             })}
                         ScrollView(.vertical){
                             VStack{
+                                //navigation link to view all ingredients
                                 NavigationLink (destination: PantryView(), isActive: self.$viewAllIngredientsSelected){
                                     EmptyView()
                                 }
+                                //navigation link to view ingredient view details
+                                NavigationLink (destination: ViewIngredientView(name: self.$selectedIngredientName), isActive: self.$ingredientSelected){
+                                    EmptyView()
+                                }
                                 //print each ingredient
-                                ForEach(self.ingredients) { model in
-                                    HStack{
-                                        Text(model.name)
-                                            .frame(width: 300, height: 45)
-                                            .background(Color(model.inStock ? calmGreen : .red))
-                                            .foregroundColor(.white)
-                                            .clipShape(Capsule())
-                                        Spacer()
-                                        //Text(model.inStock ? "In Stock" : "Not in Stock")
-                                        //    .foregroundColor(model.inStock ? .green : .red)
-                                        Button(action: {
-                                            let ingredientDB: Ingredient_DB = Ingredient_DB()
-                                            ingredientDB.deleteIngredient(ingredient: model)
-                                            //TODO Remove ingredient from Recipe_Igredient_DB
-                                            let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-                                            recipeIngredientDB.deleteIngredient(ingredient: model)
-                                            //reload from DB
-                                            self.inStockNum = Ingredient_DB().numberOfIngredients()
-                                            self.ingredients = Ingredient_DB().getIngredients()
-                                        }, label: {
-                                            Text("Delete")
-                                                .foregroundColor(.red)
-                                        })
-                                            .buttonStyle(PlainButtonStyle())
-                                            .padding()
-                                    }
+                                ForEach(self.ingredients) { ingredientModel in
+                                    Button(action: {
+                                        self.selectedIngredientName = ingredientModel.name
+                                        self.ingredientSelected = true
+                                    }, label: {
+                                        HStack{
+                                        Text(ingredientModel.name)
+                                                .padding()
+                                                .font(.headline)
+                                                .foregroundColor(.black)
+                                            Spacer()
+                                        }
+                                        .background(Color(ingredientModel.inStock ? calmGreen : .red))
+                                        .foregroundColor(.white)
+                                        .clipShape(Capsule())
+                                    })
+//                                    HStack{
+//                                        Text(model.name)
+//                                            .frame(width: 300, height: 45)
+//                                            .background(Color(model.inStock ? calmGreen : .red))
+//                                            .foregroundColor(.white)
+//                                            .clipShape(Capsule())
+//                                        Spacer()
+//                                        //Text(model.inStock ? "In Stock" : "Not in Stock")
+//                                        //    .foregroundColor(model.inStock ? .green : .red)
+//                                        Button(action: {
+//                                            let ingredientDB: Ingredient_DB = Ingredient_DB()
+//                                            ingredientDB.deleteIngredient(ingredient: model)
+//                                            //TODO Remove ingredient from Recipe_Igredient_DB
+//                                            let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
+//                                            recipeIngredientDB.deleteIngredient(ingredient: model)
+//                                            //reload from DB
+//                                            self.inStockNum = Ingredient_DB().numberOfIngredients()
+//                                            self.ingredients = Ingredient_DB().getIngredients()
+//                                        }, label: {
+//                                            Text("Delete")
+//                                                .foregroundColor(.red)
+//                                        })
+//                                            .buttonStyle(PlainButtonStyle())
+//                                            .padding()
+//                                    }
                                 }
                                 Button(action: {self.viewAllIngredientsSelected = true}, label: {Text("View All Ingredient")})
                             }
@@ -107,7 +145,7 @@ struct ContentView: View {
                             self.inStockNum = Ingredient_DB().numberOfIngredients()
                             self.ingredients = Ingredient_DB().getIngredients()
                         })
-                        .frame(height: 150)
+                        .frame(height: 200)
                         
                         
                         //Recipe Section
@@ -118,13 +156,14 @@ struct ContentView: View {
                             //    .font(.title)
                             Spacer()
                             NavigationLink (destination: AddRecipeView(), label: { Text("Add Recipe")
-                            })}
+                            }).padding(8)}
                         
                         VStack{
-                            //navigation link to view recipe view
+                            //navigation link to view recipe view details
                             NavigationLink (destination: viewRecipeView(name: self.$selectedRecipeName), isActive: self.$recipeSelected){
                                 EmptyView()
                             }
+                            //navigation link to view all recipes
                             NavigationLink (destination: CookbookView(), isActive: self.$viewAllRecipesSelected){
                                 EmptyView()
                             }

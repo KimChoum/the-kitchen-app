@@ -28,6 +28,8 @@
 		D5A0CE4127C9A4F400CA1F7B /* IngredientMultipleSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */; };
 		D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */; };
 		D5A0CE4627CE88ED00CA1F7B /* Drawer in Frameworks */ = {isa = PBXBuildFile; productRef = D5A0CE4527CE88ED00CA1F7B /* Drawer */; };
+		D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */; };
+		D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewRecipeView.swift; sourceTree = "<group>"; };
 		D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientMultipleSelectView.swift; sourceTree = "<group>"; };
 		D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
+		D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIngredientView.swift; sourceTree = "<group>"; };
+		D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIngredientView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +139,8 @@
 				D5A0CE3827C974F800CA1F7B /* CookbookView.swift */,
 				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
 				D5A0CE3A27C976A100CA1F7B /* AddRecipeView.swift */,
+				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
+				D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */,
 				D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */,
 				D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */,
 				D51335DB27BDD5BA0012B972 /* Preview Content */,
@@ -318,7 +324,9 @@
 				D5A0CE4127C9A4F400CA1F7B /* IngredientMultipleSelectView.swift in Sources */,
 				D594469E27C2F97500B27A80 /* Ingredient.swift in Sources */,
 				D5A0CE3527C7238F00CA1F7B /* Recipe_DB.swift in Sources */,
+				D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */,
 				D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */,
+				D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

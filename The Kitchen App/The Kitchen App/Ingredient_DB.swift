@@ -149,4 +149,33 @@ class Ingredient_DB{
         }
     }
     
+    //return a single recipe
+    public func getIngredient(nameValue: String) -> Ingredient{
+        //initialize recipe obj
+        let ingredientReturn: Ingredient = Ingredient()
+        do{
+            //loop through recipes
+            for ingredient in try db.prepare(ingredients.where(name == nameValue)){
+                //set recipe object values
+                ingredientReturn.name = ingredient[name]
+                ingredientReturn.inStock = ingredient[inStock]
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return ingredientReturn
+    }
+    
+    //function to update Ingredient
+    public func updateIngredient(nameValue: String, inStockValue: Bool){
+        do{
+            //get ingredient
+            let ingredient: Table = ingredients.filter(name == nameValue)
+            
+            try db.run(ingredient.update(inStock <- inStockValue))
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
 }
