@@ -8,22 +8,21 @@ import SwiftUI
 import Drawer
 
 extension Color {
-  init(_ hex: UInt, alpha: Double = 1) {
-    self.init(
-      .sRGB,
-      red: Double((hex >> 16) & 0xFF) / 255,
-      green: Double((hex >> 8) & 0xFF) / 255,
-      blue: Double(hex & 0xFF) / 255,
-      opacity: alpha
-    )
-  }
+    init(_ hex: UInt, alpha: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xFF) / 255,
+            green: Double((hex >> 8) & 0xFF) / 255,
+            blue: Double(hex & 0xFF) / 255,
+            opacity: alpha
+        )
+    }
 }
 
 struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding([.bottom], 110)
-        //.background(Color.blue)
             .background(Image("test-recipe-image")
                             .resizable()
                             .scaledToFill())
@@ -60,7 +59,7 @@ struct navigateButton: ButtonStyle {
 }
 
 struct ContentView: View {
-
+    
     //list of colors to be used
     //UIColor(Color(0x49393B))
     let backGroundColor = UIColor(Color.white)
@@ -127,7 +126,7 @@ struct ContentView: View {
                                                 .foregroundColor(Color(labelColor))
                                                 .background(Color(ingredientModel.inStock ? inStockColor : outOfStockColor))
                                                 .clipShape(RoundedRectangle(cornerRadius: 7))
-                                                //.border(Color(labelColor))
+                                            //.border(Color(labelColor))
                                         })
                                     }
                                 }
@@ -167,27 +166,47 @@ struct ContentView: View {
                             
                             //List to show ingredients:
                             ScrollView(.vertical){
-                                Button(action: {
-                                    
-                                }, label: {
-                                    
-                                })
                                 ForEach(self.recipes) { (recipeModel) in
                                     Button(action: {
                                         self.selectedRecipeName = recipeModel.name
                                         self.recipeSelected = true
                                     }, label: {
-                                        HStack{
-                                            Text(recipeModel.name)
-                                                .padding()
-                                                .font(.headline)
-                                                .background(Color(inStockColor)
-                                                                .clipShape(Capsule()))
-                                                .foregroundColor(Color(labelColor))
-                                            Spacer()
-                                            //Text("TODO: Have the ingredients?")
-                                        }.padding()
-                                    }).buttonStyle(GrowingButton())
+                                        VStack {
+                                                    Image("test-recipe-image")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                         
+                                                    HStack {
+                                                        VStack(alignment: .leading) {
+                                                            Text("Meal Type")
+                                                                .font(.headline)
+                                                                .foregroundColor(.secondary)
+                                                            Text(recipeModel.name)
+                                                                .font(.title)
+                                                                .fontWeight(.black)
+                                                                .foregroundColor(.primary)
+                                                                .lineLimit(3)
+                                                            HStack{
+                                                            Text("Can Make Now".uppercased())
+                                                                .font(.caption)
+                                                                .foregroundColor(.secondary)
+                                                            Image(systemName: "checkmark")
+                                                            }
+                                                        }
+                                                        .layoutPriority(100)
+                                         
+                                                        Spacer()
+                                                    }
+                                                    .padding()
+                                                }
+                                                .cornerRadius(10)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 10)
+                                                        .stroke(Color(.sRGB, red: 150/255, green: 150/255, blue: 150/255, opacity: 0.1), lineWidth: 1)
+                                                )
+                                                .padding([.top, .horizontal])
+                                        //.frame(height: 150)
+                                    })
                                 }
                                 //button to view all recipes
                                 Button(action: {self.viewAllRecipesSelected = true}, label: {Text("View All Recipes")})
@@ -197,13 +216,13 @@ struct ContentView: View {
                         .onAppear(perform: {
                             self.recipes = Recipe_DB().getRecipes()
                         })
-                        .frame(height: 350)
+                        .frame(maxHeight: .infinity)
                     }
                     //.navigationBarTitle(Text("My Kitchen")).navigationBarHidden(false)
                 }//end of scrollview
-//                Drawer(heights: .constant([50, 340])) {
-//                    Color(backGroundColor)
-//                }.edgesIgnoringSafeArea(.vertical)
+                //                Drawer(heights: .constant([50, 340])) {
+                //                    Color(backGroundColor)
+                //                }.edgesIgnoringSafeArea(.vertical)
             }
             .edgesIgnoringSafeArea(.vertical)
         }
