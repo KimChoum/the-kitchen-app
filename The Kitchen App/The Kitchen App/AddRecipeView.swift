@@ -16,7 +16,7 @@ struct AddRecipeView: View {
     @State var newRecipe: Recipe = Recipe()
     
     //go back to homescreen after ingredient is added
-    //@Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     var body: some View {
         //NavigationView{
@@ -48,6 +48,7 @@ struct AddRecipeView: View {
                     NavigationLink(destination: IngredientMultipleSelectView(recipeName: $name, recipeInstructions: $instructions, ingredients: self.ingredients), label: { Text("Add Ingredients").font(.body)})
                         .padding(10)
                         .simultaneousGesture(TapGesture().onEnded{
+                        self.mode.wrappedValue.dismiss()
                     })
                 }
                 //go to multiple select view for ingridient additions

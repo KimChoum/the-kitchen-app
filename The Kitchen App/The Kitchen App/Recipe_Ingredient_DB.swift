@@ -81,6 +81,24 @@ class Recipe_Ingredient_DB{
         return ingredientsList
     }
     
+    //Returns a list of ingredients needed for a given list of recipes
+    public func getAllIngredientsNeeded(recipesList: [Recipe]) -> Set<String>{
+        var ingredientsList = Set<String>()
+        
+        do{
+            for recipeItem in recipesList{
+                //loop through
+                for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(recipeName == recipeItem.name)){
+                    //append object to array
+                    ingredientsList.insert(recipe_ingredient_item[ingredientName])
+                }
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return ingredientsList
+    }
+    
     
     
     //function to delete all recipe->ingredient relations for a given RECIPE

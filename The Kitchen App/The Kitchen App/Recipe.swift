@@ -12,4 +12,5 @@ class Recipe: Identifiable{
     public var instructions: String = ""
     public var ingredients: [Ingredient] = []
     public var id = UUID()
+    public var onShoppingList: Bool = false
 }

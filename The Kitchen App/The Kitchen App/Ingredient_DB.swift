@@ -178,4 +178,25 @@ class Ingredient_DB{
         }
     }
     
+    //function to get a shopping list
+    public func getShoppingList(allIngredients: Set<String>) -> [Ingredient]{
+        var tempIngredient: Ingredient = Ingredient()
+        var shoppingList: [Ingredient] = []
+        do{
+            for nameValue in allIngredients {
+                for ingredient in try db.prepare(ingredients.where(name == nameValue)){
+                    //set recipe object values
+                    if(ingredient[inStock] == false){
+                        tempIngredient.name = ingredient[name]
+                        tempIngredient.inStock = ingredient[inStock]
+                        shoppingList.append(tempIngredient)
+                    }
+                }
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return shoppingList
+    }
+    
 }

@@ -14,6 +14,7 @@ struct viewRecipeView: View {
     //variables to hold instructions and ingredients
     @State var instructions: String = ""
     @State var ingredients: [Ingredient] = []
+    @State var onShoppingList: Bool = false
     
     //variable for if delte warning message shows
     @State private var showingAlert: Bool = false
@@ -22,6 +23,17 @@ struct viewRecipeView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
         VStack(alignment: .leading) {
+            HStack{
+                Text("Add to shopping list")
+                    .padding()
+                Toggle("", isOn: self.$onShoppingList)
+                    .frame(width: 1, alignment: .center)
+                .onChange(of: onShoppingList, perform: { value in
+                    //call DB to update user with new values
+                    Recipe_DB().updateOnShoppingList(nameValue: self.name, onShoppingListValue: self.onShoppingList)
+                    print(value)
+                })
+            }
             Text("Instructions:")
                 .font(.title)
                 .padding(.leading, 5)
@@ -53,6 +65,7 @@ struct viewRecipeView: View {
             //populate on screen
             self.instructions = recipeModel.instructions
             self.ingredients = listOfIngredients
+            self.onShoppingList = recipeModel.onShoppingList
         })
         .navigationBarItems(trailing:
         HStack{

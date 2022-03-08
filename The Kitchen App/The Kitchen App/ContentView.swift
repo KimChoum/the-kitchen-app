@@ -22,12 +22,10 @@ extension Color {
 struct GrowingButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding([.bottom], 110)
-            .background(Image("test-recipe-image")
-                            .resizable()
-                            .scaledToFill())
+            .padding()
+            .background(Color.blue)
             .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
@@ -85,6 +83,8 @@ struct ContentView: View {
     //variable to see if ingredient has been clicked on
     @State var ingredientSelected: Bool = false
     @State var selectedIngredientName: String = ""
+    //var to see if view shopping list is pressed
+    @State var viewShoppingListSelected: Bool = false
     
     var body: some View {
         NavigationView{
@@ -92,6 +92,15 @@ struct ContentView: View {
                 Color(backGroundColor)
                 ScrollView{
                     VStack{
+                        //View Shopping List Button
+                        //navigation link to view all ingredients
+                        NavigationLink (destination: ShoppingListView(), isActive: self.$viewShoppingListSelected){
+                            EmptyView()
+                        }
+                        Button(action: {
+                            self.viewShoppingListSelected = true
+                        }, label: {Text("View Shopping List")})
+                                .buttonStyle(GrowingButton())
                         //Ingredient Section
                         HStack{
                             Text("Ingredients")
@@ -130,7 +139,9 @@ struct ContentView: View {
                                         })
                                     }
                                 }
-                                Button(action: {self.viewAllIngredientsSelected = true}, label: {Text("View All Ingredient")})
+                                Button(action: {
+                                    self.viewAllIngredientsSelected = true
+                                }, label: {Text("View All Ingredient")})
                                 
                             }
                         }
@@ -224,7 +235,7 @@ struct ContentView: View {
                 //                    Color(backGroundColor)
                 //                }.edgesIgnoringSafeArea(.vertical)
             }
-            .edgesIgnoringSafeArea(.vertical)
+            //.edgesIgnoringSafeArea(.vertical)
         }
     }
 }

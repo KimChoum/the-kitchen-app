@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52D27D7042400215801 /* ShoppingListView.swift */; };
 		D51335D627BDD5B80012B972 /* The_Kitchen_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */; };
 		D51335D827BDD5B80012B972 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D727BDD5B80012B972 /* ContentView.swift */; };
 		D51335DA27BDD5BA0012B972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51335D927BDD5BA0012B972 /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D503C52D27D7042400215801 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		D51335D227BDD5B80012B972 /* The Kitchen App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Kitchen App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = The_Kitchen_AppApp.swift; sourceTree = "<group>"; };
 		D51335D727BDD5B80012B972 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */,
 				D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */,
 				D51335DB27BDD5BA0012B972 /* Preview Content */,
+				D503C52D27D7042400215801 /* ShoppingListView.swift */,
 			);
 			path = "The Kitchen App";
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				D5A0CE4127C9A4F400CA1F7B /* IngredientMultipleSelectView.swift in Sources */,
 				D594469E27C2F97500B27A80 /* Ingredient.swift in Sources */,
 				D5A0CE3527C7238F00CA1F7B /* Recipe_DB.swift in Sources */,
+				D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */,
 				D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */,
 				D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */,
 				D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */,

@@ -19,6 +19,7 @@ class Recipe_DB{
     //Table column instances:
     private var name: Expression<String>!
     private var instructions: Expression<String>!
+    private var onShoppingList: Expression<Bool>!
     //private var ingredients: Expression<[Ingredient]>!
     
     init(){
@@ -36,12 +37,14 @@ class Recipe_DB{
             //initialize columns
             name = Expression<String>("name")
             instructions = Expression<String>("instructions")
+            onShoppingList = Expression<Bool>("onShoppingList")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_recipe_db_created")){
                 //case that table does not exist yet
                 try db.run(recipes.create { (t) in
                     t.column(name, primaryKey: true)
                     t.column(instructions)
+                    t.column(onShoppingList)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_recipe_db_created")
@@ -56,7 +59,10 @@ class Recipe_DB{
     public func addRecipe(nameValue: String, instructionsValue: String){
         
         do{
-            try db.run(recipes.insert(name <- nameValue, instructions <- instructionsValue))
+            print("adding recipe to database")
+            print("name")
+            print(nameValue)
+            try db.run(recipes.insert(name <- nameValue, instructions <- instructionsValue, onShoppingList <- false))
         } catch{
             print(error.localizedDescription)
         }
@@ -82,6 +88,7 @@ class Recipe_DB{
                 //set values of ingredient object to that of querried ingredient
                 recipeReturn.name = recipe[name]
                 recipeReturn.instructions = recipe[instructions]
+                recipeReturn.onShoppingList = recipe[onShoppingList]
                 //append object to array
                 recipesList.append(recipeReturn)
             }
@@ -101,6 +108,7 @@ class Recipe_DB{
                 //set recipe object values
                 recipeReturn.name = recipe[name]
                 recipeReturn.instructions = recipe[instructions]
+                recipeReturn.onShoppingList = recipe[onShoppingList]
             }
         }catch{
             print(error.localizedDescription)
@@ -119,6 +127,37 @@ class Recipe_DB{
         } catch{
             print(error.localizedDescription)
         }
+    }
+    
+    //Function to change value of onShoppingList for a recipe
+    public func updateOnShoppingList(nameValue: String, onShoppingListValue: Bool){
+        do{
+            print("updating recipe:")
+            print(onShoppingListValue)
+            //get ingredient
+            let recipe: Table = recipes.filter(name == nameValue)
+            
+            try db.run(recipe.update(onShoppingList <- onShoppingListValue))
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    //Function to return the names of all recipes that currently have onShoppingList = true
+    public func getRecipesOnShoppingList() -> [Recipe]{
+        var listOfRecipes: [Recipe] = []
+        var recipeToAdd: Recipe = Recipe()
+        do{
+            //loop through recipes
+            for recipe in try db.prepare(recipes.where(onShoppingList == true)){
+                //set recipe object values
+                recipeToAdd.name = recipe[name]
+                listOfRecipes.append(recipeToAdd)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return listOfRecipes
     }
     
     //function to return number of recipes in database you can currently make

@@ -14,7 +14,6 @@ struct PantryView: View {
     @State var inStockNum: Int = 0
     
     var body: some View {
-        //NavigationView{
             List{
                 //Add ingredient link
                 NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient")

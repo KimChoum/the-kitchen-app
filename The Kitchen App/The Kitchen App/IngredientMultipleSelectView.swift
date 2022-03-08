@@ -28,8 +28,7 @@ struct IngredientMultipleSelectView: View {
             self.ingredients = Ingredient_DB().getIngredients()
             })
         
-        NavigationLink(destination: ContentView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
-            
+        Button(action: {
             recipeValue.instructions = recipeInstructions
             recipeValue.name = recipeName
 
@@ -42,7 +41,23 @@ struct IngredientMultipleSelectView: View {
             }
             //call function to add new row in sqlite
             Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
-        })
+            self.mode.wrappedValue.dismiss()
+        }, label: {Text("Add Recipe")})
+//        NavigationLink(destination: ContentView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
+//
+//            recipeValue.instructions = recipeInstructions
+//            recipeValue.name = recipeName
+//
+//            //add all selected ingredients to junction table
+//            for ingredientValue in ingredients{
+//                //if currently selected add to junction table
+//                if(selectedRows.contains(ingredientValue.id)){
+//                    Recipe_Ingredient_DB().recipeToIngredient(recipeNameValue: recipeValue.name, ingredientNameValue: ingredientValue.name)
+//                }
+//            }
+//            //call function to add new row in sqlite
+//            Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
+//        })
     }
 }
 
