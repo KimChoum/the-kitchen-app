@@ -132,8 +132,6 @@ class Recipe_DB{
     //Function to change value of onShoppingList for a recipe
     public func updateOnShoppingList(nameValue: String, onShoppingListValue: Bool){
         do{
-            print("updating recipe:")
-            print(onShoppingListValue)
             //get ingredient
             let recipe: Table = recipes.filter(name == nameValue)
             

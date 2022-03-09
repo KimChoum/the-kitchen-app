@@ -18,46 +18,41 @@ struct IngredientMultipleSelectView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     var body: some View {
-        
-        List(selection: $selectedRows){
-            ForEach(ingredients){ ingredient in
-            IngredientRow(ingredient: ingredient, selectedItems: $selectedRows)
+        VStack{
+            HStack{
+                Text("Ingredients list")
+                    .font(.title)
+                    .foregroundColor(Color(labelColor))
+                Spacer()
+                //Add ingredient link
+                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
+                    .padding(.trailing, 8)})
             }
-        }   //load data to array
-        .onAppear(perform: {
-            self.ingredients = Ingredient_DB().getIngredients()
-            })
-        
-        Button(action: {
-            recipeValue.instructions = recipeInstructions
-            recipeValue.name = recipeName
-
-            //add all selected ingredients to junction table
-            for ingredientValue in ingredients{
-                //if currently selected add to junction table
-                if(selectedRows.contains(ingredientValue.id)){
-                    Recipe_Ingredient_DB().recipeToIngredient(recipeNameValue: recipeValue.name, ingredientNameValue: ingredientValue.name)
+            List(selection: $selectedRows){
+                ForEach(ingredients){ ingredient in
+                    IngredientRow(ingredient: ingredient, selectedItems: $selectedRows)
                 }
-            }
-            //call function to add new row in sqlite
-            Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
-            self.mode.wrappedValue.dismiss()
-        }, label: {Text("Add Recipe")})
-//        NavigationLink(destination: ContentView(), label: { Text("Add Recipe")}).simultaneousGesture(TapGesture().onEnded{
-//
-//            recipeValue.instructions = recipeInstructions
-//            recipeValue.name = recipeName
-//
-//            //add all selected ingredients to junction table
-//            for ingredientValue in ingredients{
-//                //if currently selected add to junction table
-//                if(selectedRows.contains(ingredientValue.id)){
-//                    Recipe_Ingredient_DB().recipeToIngredient(recipeNameValue: recipeValue.name, ingredientNameValue: ingredientValue.name)
-//                }
-//            }
-//            //call function to add new row in sqlite
-//            Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
-//        })
+            }   //load data to array
+            .onAppear(perform: {
+                self.ingredients = Ingredient_DB().getIngredients()
+            })
+            
+            Button(action: {
+                recipeValue.instructions = recipeInstructions
+                recipeValue.name = recipeName
+                
+                //add all selected ingredients to junction table
+                for ingredientValue in ingredients{
+                    //if currently selected add to junction table
+                    if(selectedRows.contains(ingredientValue.id)){
+                        Recipe_Ingredient_DB().recipeToIngredient(recipeNameValue: recipeValue.name, ingredientNameValue: ingredientValue.name)
+                    }
+                }
+                //call function to add new row in sqlite
+                Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
+                self.mode.wrappedValue.dismiss()
+            }, label: {Text("Add Recipe")})
+        }
     }
 }
 

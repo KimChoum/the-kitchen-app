@@ -19,38 +19,54 @@ struct viewRecipeView: View {
     //variable for if delte warning message shows
     @State private var showingAlert: Bool = false
     
+    //variable to see if ingredient has been clicked on
+    @State var ingredientSelected: Bool = false
+    @State var selectedIngredientName: String = ""
+    
     //To return to previous view
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack{
-                Text("Add to shopping list")
-                    .padding()
-                Toggle("", isOn: self.$onShoppingList)
-                    .frame(width: 1, alignment: .center)
-                .onChange(of: onShoppingList, perform: { value in
-                    //call DB to update user with new values
-                    Recipe_DB().updateOnShoppingList(nameValue: self.name, onShoppingListValue: self.onShoppingList)
-                    print(value)
-                })
-            }
-            Text("Instructions:")
-                .font(.title)
-                .padding(.leading, 5)
-            Text(instructions)
-                .padding()
-            Text("Ingredients:")
-                .font(.title)
-                .padding(.leading, 5)
-            List(self.ingredients) { (model) in
+        ScrollView{
+            VStack(alignment: .leading) {
                 HStack{
-                    Text(model.name)
-                    Spacer()
-                    Text(model.inStock ? "In Stock" : "Not in Stock")
+                    Text("Add to shopping list")
+                        .padding()
+                    Toggle("", isOn: self.$onShoppingList)
+                        .onChange(of: onShoppingList, perform: { value in
+                            //call DB to update user with new values
+                            Recipe_DB().updateOnShoppingList(nameValue: self.name, onShoppingListValue: self.onShoppingList)
+                            print(value)
+                            print("Are ingredients here?")
+                            for ingredient in ingredients {
+                                print(ingredient.name)
+                            }
+                        })
                 }
-                .background(Color(model.inStock ? .green : .red))
-                //.padding()
-            }.padding()
+                Text("Instructions:")
+                    .font(.title)
+                    .padding(.leading, 5)
+                Text(instructions)
+                    .padding()
+                Text("Ingredients:")
+                    .font(.title)
+                    .padding(.leading, 5)
+                //print each ingredient
+                ForEach(self.ingredients) { ingredientModel in
+                    HStack{
+                        Button(action: {
+                            self.selectedIngredientName = ingredientModel.name
+                            self.ingredientSelected = true
+                        }, label: {
+                            Text(ingredientModel.name)
+                                .frame(maxWidth: 350, minHeight: 35, alignment: .leading)
+                                .foregroundColor(Color(labelColor))
+                                .background(Color(ingredientModel.inStock ? inStockColor : outOfStockColor))
+                                .clipShape(RoundedRectangle(cornerRadius: 7))
+                            //.border(Color(labelColor))
+                        })
+                    }
+                }
+            }
         }
         //populate instructions and ingredient variables
         .onAppear(perform: {
@@ -68,10 +84,10 @@ struct viewRecipeView: View {
             self.onShoppingList = recipeModel.onShoppingList
         })
         .navigationBarItems(trailing:
-        HStack{
+                                HStack{
             Spacer()
             Button("Delete") {
-                        showingAlert = true
+                showingAlert = true
             }
             .padding()
             .alert(isPresented:$showingAlert) {
@@ -99,7 +115,7 @@ struct viewRecipeView: View {
 }
 
 struct viewRecipeView_Previews: PreviewProvider {
-    @State static var name: String = ""
+    @State static var name: String = "Chicken"
     static var previews: some View {
         viewRecipeView(name: $name)
     }

@@ -96,6 +96,10 @@ class Recipe_Ingredient_DB{
         }catch{
             print(error.localizedDescription)
         }
+        print("Shopping List")
+        for ingredientValue in ingredientsList{
+            print(ingredientValue)
+        }
         return ingredientsList
     }
     
