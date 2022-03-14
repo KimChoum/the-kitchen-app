@@ -10,6 +10,7 @@ import SQLite
 import SwiftUI
 
 
+
 class Recipe_DB{
     
     //SQLite instance:
@@ -20,6 +21,7 @@ class Recipe_DB{
     private var name: Expression<String>!
     private var instructions: Expression<String>!
     private var onShoppingList: Expression<Bool>!
+    private var image: Expression<String>!
     //private var ingredients: Expression<[Ingredient]>!
     
     init(){
@@ -59,9 +61,6 @@ class Recipe_DB{
     public func addRecipe(nameValue: String, instructionsValue: String){
         
         do{
-            print("adding recipe to database")
-            print("name")
-            print(nameValue)
             try db.run(recipes.insert(name <- nameValue, instructions <- instructionsValue, onShoppingList <- false))
         } catch{
             print(error.localizedDescription)
@@ -100,6 +99,7 @@ class Recipe_DB{
     
     //return a single recipe
     public func getRecipe(nameValue: String) -> Recipe{
+        print("get recipe")
         //initialize recipe obj
         let recipeReturn: Recipe = Recipe()
         do{

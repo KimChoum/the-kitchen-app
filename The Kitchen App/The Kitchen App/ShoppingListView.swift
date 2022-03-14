@@ -50,7 +50,6 @@ struct ShoppingListView: View {
                 //print each ingredient
                 ForEach(self.ingredientsToBuy) { ingredientModel in
                     Button(action: {
-                        print(ingredientModel.name)
                         self.selectedIngredientName = ingredientModel.name
                         //                        self.ingredientSelected = true
                         self.showingAlert = true

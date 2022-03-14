@@ -50,7 +50,12 @@ struct viewRecipeView: View {
                 Text("Ingredients:")
                     .font(.title)
                     .padding(.leading, 5)
+                
                 //print each ingredient
+                //navigation link to view ingredient view details
+                NavigationLink (destination: ViewIngredientView(name: self.$selectedIngredientName), isActive: self.$ingredientSelected){
+                    EmptyView()
+                }
                 ForEach(self.ingredients) { ingredientModel in
                     HStack{
                         Button(action: {

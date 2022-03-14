@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Recipe: Identifiable{
     public var name: String = ""
@@ -13,4 +14,5 @@ class Recipe: Identifiable{
     public var ingredients: [Ingredient] = []
     public var id = UUID()
     public var onShoppingList: Bool = false
+    public var image: UIImage = UIImage(systemName: "photo")!
 }

@@ -7,10 +7,21 @@
 
 import SwiftUI
 
+func documentDirectoryPath() -> URL? {
+    let path = FileManager.default.urls(for: .documentDirectory,
+                                           in: .userDomainMask)
+    return path.first
+}
+
+
 struct IngredientMultipleSelectView: View {
+    //file manager instance for saving images
+    public var fileManager = LocalFileManager.instance
+    
     //Name of recipe recived from previous view
     @Binding var recipeName: String
     @Binding var recipeInstructions: String
+    @Binding var recipeImage: UIImage
     
     @State var recipeValue: Recipe = Recipe()
     @State var selectedRows = Set<UUID>()
@@ -38,6 +49,9 @@ struct IngredientMultipleSelectView: View {
             })
             
             Button(action: {
+                //save image to file
+                fileManager.saveImage(image: recipeImage, imageName: recipeName, folderName: "recipeImages")
+                
                 recipeValue.instructions = recipeInstructions
                 recipeValue.name = recipeName
                 
@@ -59,7 +73,8 @@ struct IngredientMultipleSelectView: View {
 struct IngredientMultipleSelectView_Previews: PreviewProvider {
     @State static var recipeName: String = ""
     @State static var recipeInstructions: String = ""
+    @State static var recipeImage: UIImage = UIImage()
     static var previews: some View {
-        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, ingredients: [Ingredient()])
+        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, ingredients: [Ingredient()])
     }
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52D27D7042400215801 /* ShoppingListView.swift */; };
+		D503C53027D989AE00215801 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52F27D989AE00215801 /* ImagePicker.swift */; };
+		D503C53227DEB22D00215801 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C53127DEB22D00215801 /* LocalFileManager.swift */; };
 		D51335D627BDD5B80012B972 /* The_Kitchen_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */; };
 		D51335D827BDD5B80012B972 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D727BDD5B80012B972 /* ContentView.swift */; };
 		D51335DA27BDD5BA0012B972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51335D927BDD5BA0012B972 /* Assets.xcassets */; };
@@ -52,6 +54,8 @@
 
 /* Begin PBXFileReference section */
 		D503C52D27D7042400215801 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
+		D503C52F27D989AE00215801 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		D503C53127DEB22D00215801 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		D51335D227BDD5B80012B972 /* The Kitchen App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Kitchen App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = The_Kitchen_AppApp.swift; sourceTree = "<group>"; };
 		D51335D727BDD5B80012B972 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +109,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D503C53327DEB25800215801 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				D503C52F27D989AE00215801 /* ImagePicker.swift */,
+				D503C53127DEB22D00215801 /* LocalFileManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		D503C53427DEB27400215801 /* Databases */ = {
+			isa = PBXGroup;
+			children = (
+				D594469F27C2FA8300B27A80 /* Ingredient_DB.swift */,
+				D5A0CE3427C7238F00CA1F7B /* Recipe_DB.swift */,
+				D5A0CE3627C96A8300CA1F7B /* Recipe_Ingredient_DB.swift */,
+			);
+			path = Databases;
+			sourceTree = "<group>";
+		};
+		D503C53527DEB2AC00215801 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D594469D27C2F97400B27A80 /* Ingredient.swift */,
+				D5A0CE3227C721DF00CA1F7B /* Recipe.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		D51335C927BDD5B80012B972 = {
 			isa = PBXGroup;
 			children = (
@@ -131,20 +163,18 @@
 				D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */,
 				D51335D727BDD5B80012B972 /* ContentView.swift */,
 				D51335D927BDD5BA0012B972 /* Assets.xcassets */,
-				D594469D27C2F97400B27A80 /* Ingredient.swift */,
-				D5A0CE3227C721DF00CA1F7B /* Recipe.swift */,
-				D594469F27C2FA8300B27A80 /* Ingredient_DB.swift */,
-				D5A0CE3427C7238F00CA1F7B /* Recipe_DB.swift */,
-				D5A0CE3627C96A8300CA1F7B /* Recipe_Ingredient_DB.swift */,
+				D503C53527DEB2AC00215801 /* Models */,
+				D503C53327DEB25800215801 /* Utilities */,
+				D503C53427DEB27400215801 /* Databases */,
 				D59446A527C32CCC00B27A80 /* PantryView.swift */,
 				D503C52D27D7042400215801 /* ShoppingListView.swift */,
 				D5A0CE3827C974F800CA1F7B /* CookbookView.swift */,
 				D59446A327C30B7D00B27A80 /* AddIngredientView.swift */,
 				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
 				D5A0CE3A27C976A100CA1F7B /* AddRecipeView.swift */,
+				D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */,
 				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
 				D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */,
-				D5A0CE4027C9A4F400CA1F7B /* IngredientMultipleSelectView.swift */,
 				D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */,
 				D51335DB27BDD5BA0012B972 /* Preview Content */,
 			);
@@ -317,8 +347,10 @@
 				D59446A627C32CCC00B27A80 /* PantryView.swift in Sources */,
 				D5A0CE3927C974F800CA1F7B /* CookbookView.swift in Sources */,
 				D5A0CE3B27C976A100CA1F7B /* AddRecipeView.swift in Sources */,
+				D503C53027D989AE00215801 /* ImagePicker.swift in Sources */,
 				D59446A427C30B7D00B27A80 /* AddIngredientView.swift in Sources */,
 				D5A0CE3727C96A8300CA1F7B /* Recipe_Ingredient_DB.swift in Sources */,
+				D503C53227DEB22D00215801 /* LocalFileManager.swift in Sources */,
 				D5A0CE3327C721E000CA1F7B /* Recipe.swift in Sources */,
 				D59446A027C2FA8300B27A80 /* Ingredient_DB.swift in Sources */,
 				D51335D827BDD5B80012B972 /* ContentView.swift in Sources */,
@@ -494,6 +526,7 @@
 				DEVELOPMENT_TEAM = 8H6L6WKL9E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "TheKitchen needs access to your photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -524,6 +557,7 @@
 				DEVELOPMENT_TEAM = 8H6L6WKL9E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "TheKitchen needs access to your photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
