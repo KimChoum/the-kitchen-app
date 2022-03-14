@@ -22,6 +22,7 @@ struct ShoppingListView: View {
     
     //vars handing selection of an ingredient
     @State var selectedIngredientName: String = ""
+    @State var selectedIngredientID: String = ""
     
     //handle navigation button selected
     @State var viewShoppingListSelected: Bool = false
@@ -66,8 +67,9 @@ struct ShoppingListView: View {
                             Button("Cencel") { }
                             Button("Yes") {
                                 //call DB to update user with new values
-                                Ingredient_DB().updateIngredient(nameValue: self.selectedIngredientName, inStockValue: true)
-                                self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredients: Recipe_Ingredient_DB().getAllIngredientsNeeded(recipesList: recipesToMake))
+                                Ingredient_DB().updateIngredient(idValue: self.selectedIngredientID, nameValue: self.selectedIngredientName, inStockValue: true)
+                                
+                                self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredientIDs: Recipe_Ingredient_DB().getAllIngredientIDsNeeded(recipesList: recipesToMake))
                             }
                         }
                 }
@@ -77,7 +79,7 @@ struct ShoppingListView: View {
         //load data to array
         .onAppear(perform: {
             self.recipesToMake = Recipe_DB().getRecipesOnShoppingList()
-            self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredients: Recipe_Ingredient_DB().getAllIngredientsNeeded(recipesList: recipesToMake))
+            self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredientIDs: Recipe_Ingredient_DB().getAllIngredientIDsNeeded(recipesList: recipesToMake))
         })
     }
 }

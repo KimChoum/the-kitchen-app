@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditIngredientView: View {
     //name of ingredient recieved
-    @Binding var ingredientName: String
+    @Binding var ingredientID: String
     
     //variables to store values for input fields
     @State var ingredient: Ingredient = Ingredient()
@@ -48,23 +48,23 @@ struct EditIngredientView: View {
                     .padding()
             }
             //create name entry field:
-            Text(name)
-                .font(.title)
-            //            TextField("Ingredient name", text: $name)
-            //                .padding(10)
-            //                .background(Color(.systemGray6))
-            //                .cornerRadius(5)
-            //                .disableAutocorrection(true)
+            //            Text(name)
+            //                .font(.title)
+            TextField("Ingredient name", text: $name)
+                .padding(10)
+                .background(Color(.systemGray6))
+                .cornerRadius(5)
+                .disableAutocorrection(true)
             //create entry to enable in stock
             Toggle(isOn: $inStock) {
                 Text("In stock")
                     .padding(.leading)
             }
             
-            //button to create new row in db
+            //button to update db
             Button(action: {
                 //call DB to update user with new values
-                Ingredient_DB().updateIngredient(nameValue: self.name, inStockValue: self.inStock)
+                Ingredient_DB().updateIngredient(idValue: self.ingredientID, nameValue: self.name, inStockValue: self.inStock)
                 //go back to previous view
                 self.mode.wrappedValue.dismiss()
                 //call function to add new row in sqlite
@@ -74,34 +74,17 @@ struct EditIngredientView: View {
                 .padding(.bottom, 10)
         }
         .onAppear(perform: {
-            let ingredientModel: Ingredient = Ingredient_DB().getIngredient(nameValue: self.ingredientName)
+            let ingredientModel: Ingredient = Ingredient_DB().getIngredient(idValue: self.ingredientID)
             self.ingredient = ingredientModel
             self.name = ingredientModel.name
             self.inStock = ingredientModel.inStock
         })
-        //            .navigationBarItems(trailing: {
-        //                HStack{
-        //                    Spacer()
-        //                    Button(action: {
-        //                        let ingredientDB: Ingredient_DB = Ingredient_DB()
-        //                        ingredientDB.deleteIngredient(ingredient: self.ingredient)
-        //                        //TODO Remove ingredient from Recipe_Igredient_DB
-        //                        let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-        //                        recipeIngredientDB.deleteIngredient(ingredient: self.ingredient)
-        //                    }, label: {
-        //                        Text("Delete")
-        //                            .foregroundColor(.red)
-        //                    })
-        //                        .buttonStyle(PlainButtonStyle())
-        //                        .padding()
-        //                }
-        //            })
     }
 }
 
 struct EditIngredientView_Previews: PreviewProvider {
-    @State static var ingredientName: String = ""
+    @State static var ingredientID: String = ""
     static var previews: some View {
-        EditIngredientView(ingredientName: $ingredientName)
+        EditIngredientView(ingredientID: $ingredientID)
     }
 }

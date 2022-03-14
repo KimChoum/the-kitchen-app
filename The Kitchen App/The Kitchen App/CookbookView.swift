@@ -27,7 +27,7 @@ struct CookbookView: View {
     //check if recipe is selected
     @State var recipeSelected: Bool = false
     //name of recipe to view
-    @State var selectedRecipeName: String = ""
+    @State var selectedRecipeID: String = ""
     //if view all is selected
     @State var viewAllRecipesSelected: Bool = false
     
@@ -50,7 +50,7 @@ struct CookbookView: View {
             
             VStack{
                 //navigation link to view recipe view details
-                NavigationLink (destination: viewRecipeView(name: self.$selectedRecipeName), isActive: self.$recipeSelected){
+                NavigationLink (destination: viewRecipeView(id: self.$selectedRecipeID), isActive: self.$recipeSelected){
                     EmptyView()
                 }
                 
@@ -59,11 +59,11 @@ struct CookbookView: View {
                     ForEach(self.recipes) { (recipeModel) in
 
                         Button(action: {
-                            self.selectedRecipeName = recipeModel.name
+                            self.selectedRecipeID = recipeModel.id.uuidString
                             self.recipeSelected = true
                         }, label: {
                             VStack {
-                                Image(uiImage: fileManager.getImage(imageName: recipeModel.name, folderName: "recipeImages") ?? UIImage(named: "test-recipe-image")!)
+                                Image(uiImage: fileManager.getImage(imageName: recipeModel.id.uuidString, folderName: "recipeImages") ?? UIImage(named: "test-recipe-image")!)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                 
@@ -104,7 +104,6 @@ struct CookbookView: View {
             }
             //load data to array
             .onAppear(perform: {
-                print("CALLING GET RECIPES")
                 self.recipes = Recipe_DB().getRecipes()
             })
         }

@@ -17,6 +17,7 @@ class Ingredient_DB{
     //Table instance
     private var ingredients: Table!
     //Table column instances:
+    private var id: Expression<String>!
     private var name: Expression<String>!
     private var inStock: Expression<Bool>!
     //private var id: Expression<Int64>!
@@ -35,6 +36,7 @@ class Ingredient_DB{
             //create table:
             ingredients = Table("ingredients")
             //initialize columns
+            id = Expression<String>("id")
             name = Expression<String>("name")
             inStock = Expression<Bool>("inStock")
             //id = Expression<Int64>("id")
@@ -42,7 +44,8 @@ class Ingredient_DB{
             if(!UserDefaults.standard.bool(forKey: "is_ingredient_db_created")){
                 //case that table does not exist yet
                 try db.run(ingredients.create { (t) in
-                    t.column(name, primaryKey: true)
+                    t.column(id, primaryKey: true)
+                    t.column(name)
                     t.column(inStock)
                     //t.column(id, primaryKey: true)
                 })
@@ -55,10 +58,10 @@ class Ingredient_DB{
 
     }
     
-    public func addIngredient(nameValue: String, inStockValue: Bool){
+    public func addIngredient(idValue: String, nameValue: String, inStockValue: Bool){
         
         do{
-            try db.run(ingredients.insert(name <- nameValue, inStock <- inStockValue))
+            try db.run(ingredients.insert(id <- idValue, name <- nameValue, inStock <- inStockValue))
         } catch{
             print(error.localizedDescription)
         }
@@ -82,6 +85,7 @@ class Ingredient_DB{
                 //create ingredient object for each loop iteration
                 let ingredientReturn: Ingredient = Ingredient()
                 //set values of ingredient object to that of querried ingredient
+                ingredientReturn.id = UUID(uuidString: ingredient[id])!
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
                 //append object to array
@@ -105,7 +109,7 @@ class Ingredient_DB{
     }
     
     
-    public func getRecipeIngredients(ingredientsList: [String]) -> [Ingredient]{
+    public func getRecipeIngredients(ingredientIDList: [String]) -> [Ingredient]{
         //empty array
         print("initializeing ingredients list that will be returned")
         var ingredientsListReturn: [Ingredient] = []
@@ -113,17 +117,17 @@ class Ingredient_DB{
         //get ingredients in order of in stock
         //ingredients = ingredients.order(inStock.desc, name.asc)
         print("looping over ingredientsList given")
-        for ingredientNameToGet in ingredientsList {
+        for ingredientIDToGet in ingredientIDList {
         
             do{
             print("about to try and query ingredients")
-            for ingredientItem in try db.prepare(ingredients.filter(name == ingredientNameToGet)) {
+            for ingredientItem in try db.prepare(ingredients.filter(id == ingredientIDToGet)) {
                 
                 //create ingredient object for each loop iteration
                 let ingredientReturn: Ingredient = Ingredient()
                 //set values of ingredient object to that of querried ingredient
+                ingredientReturn.id = UUID(uuidString: ingredientItem[id])!
                 ingredientReturn.name = ingredientItem[name]
-                print(ingredientItem[name])
                 ingredientReturn.inStock = ingredientItem[inStock]
                 //append object to array
                 ingredientsListReturn.append(ingredientReturn)
@@ -138,9 +142,9 @@ class Ingredient_DB{
     //function to delete an ingredient from the databse
     public func deleteIngredient(ingredient: Ingredient){
         do{
-            let ingredientName = ingredient.name
+            let ingredientID = ingredient.id
             //get recipe using name
-            let ingredient: Table = ingredients.filter(name == ingredientName)
+            let ingredient: Table = ingredients.filter(id == ingredientID.uuidString)
             
             //delete recipe by running the delete query
             try db.run(ingredient.delete())
@@ -150,13 +154,14 @@ class Ingredient_DB{
     }
     
     //return a single recipe
-    public func getIngredient(nameValue: String) -> Ingredient{
+    public func getIngredient(idValue: String) -> Ingredient{
         //initialize recipe obj
         let ingredientReturn: Ingredient = Ingredient()
         do{
             //loop through recipes
-            for ingredient in try db.prepare(ingredients.where(name == nameValue)){
+            for ingredient in try db.prepare(ingredients.where(id == idValue)){
                 //set recipe object values
+                ingredientReturn.id = UUID(uuidString: ingredient[id])!
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
             }
@@ -167,28 +172,29 @@ class Ingredient_DB{
     }
     
     //function to update Ingredient
-    public func updateIngredient(nameValue: String, inStockValue: Bool){
+    public func updateIngredient(idValue: String, nameValue: String, inStockValue: Bool){
         do{
             //get ingredient
-            let ingredient: Table = ingredients.filter(name == nameValue)
+            let ingredient: Table = ingredients.filter(id == idValue)
             
-            try db.run(ingredient.update(inStock <- inStockValue))
+            try db.run(ingredient.update(inStock <- inStockValue, name <- nameValue))
         }catch{
             print(error.localizedDescription)
         }
     }
     
     //function to get a shopping list
-    public func getShoppingList(allIngredients: Set<String>) -> [Ingredient]{
+    public func getShoppingList(allIngredientIDs: Set<String>) -> [Ingredient]{
         var shoppingList: [Ingredient] = []
         do{
-            for nameValue in allIngredients {
-                for ingredient in try db.prepare(ingredients.where(name == nameValue)){
+            for idValue in allIngredientIDs {
+                for ingredient in try db.prepare(ingredients.where(id == idValue)){
                     let tempIngredient: Ingredient = Ingredient()
                     //set recipe object values
                     if(ingredient[inStock] == false){
                         tempIngredient.name = ingredient[name]
                         tempIngredient.inStock = ingredient[inStock]
+                        tempIngredient.id = UUID(uuidString: ingredient[id])!
                         shoppingList.append(tempIngredient)
                     }
                 }

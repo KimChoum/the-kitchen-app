@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ViewIngredientView: View {
     //Name of recipe recived from revious view
-    @Binding var name: String
+    @Binding var id: String
     
     //variables to hold ingredient
     //@State var ingredientValue: Ingredient = Ingredient()
@@ -34,14 +34,14 @@ struct ViewIngredientView: View {
                 .frame(width: 1, alignment: .center)
             .onChange(of: inStock, perform: { value in
                 //call DB to update user with new values
-                Ingredient_DB().updateIngredient(nameValue: self.name, inStockValue: self.inStock)
+                Ingredient_DB().updateIngredient(idValue: self.id, nameValue: self.ingredientName, inStockValue: self.inStock)
                 print(value)
             })
         }
         //populate instructions and ingredient variables
         .onAppear(perform: {
             //Ingredient data from DB
-            let ingredientModel: Ingredient = Ingredient_DB().getIngredient(nameValue: self.name)
+            let ingredientModel: Ingredient = Ingredient_DB().getIngredient(idValue: self.id)
             
             //populate on screen
             self.ingredientName = ingredientModel.name
@@ -50,7 +50,7 @@ struct ViewIngredientView: View {
         .navigationBarItems(trailing:
                                 HStack{
             Spacer()
-            NavigationLink(destination: EditIngredientView(ingredientName: self.$ingredientName), label: {Text("Edit")})
+            NavigationLink(destination: EditIngredientView(ingredientID: self.$id), label: {Text("Edit")})
         }
         )
         //.navigationBarTitle(self.name)
@@ -58,11 +58,10 @@ struct ViewIngredientView: View {
 }
 
 struct ViewIngredientView_Previews: PreviewProvider {
-    @State static var name: String = ""
+    @State static var id: String = ""
     static var previews: some View {
         Group {
-            ViewIngredientView(name: $name)
-            ViewIngredientView(name: $name)
+            ViewIngredientView(id: $id)
         }
     }
 }

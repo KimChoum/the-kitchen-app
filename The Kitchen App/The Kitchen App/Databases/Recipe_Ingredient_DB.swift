@@ -17,8 +17,8 @@ class Recipe_Ingredient_DB{
     //Table instance
     private var recipe_ingredient: Table!
     //Table column instances:
-    private var recipeName: Expression<String>!
-    private var ingredientName: Expression<String>!
+    private var recipeID: Expression<String>!
+    private var ingredientID: Expression<String>!
     
     init(){
         
@@ -34,14 +34,14 @@ class Recipe_Ingredient_DB{
             //create table:
             recipe_ingredient = Table("recipes")
             //initialize columns
-            recipeName = Expression<String>("recipeName")
-            ingredientName = Expression<String>("ingredientName")
+            recipeID = Expression<String>("recipeID")
+            ingredientID = Expression<String>("ingredientID")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_recipe_ingredient_db_created")){
                 //case that table does not exist yet
                 try db.run(recipe_ingredient.create { (t) in
-                    t.column(recipeName)
-                    t.column(ingredientName)
+                    t.column(recipeID)
+                    t.column(ingredientID)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_recipe_ingredient_db_created")
@@ -53,26 +53,26 @@ class Recipe_Ingredient_DB{
     }
     
     //Add a recipe to ingredient relationship into database
-    public func recipeToIngredient(recipeNameValue: String, ingredientNameValue: String){
+    public func recipeToIngredient(recipeIDValue: String, ingredientIDValue: String){
         
         do{
-            try db.run(recipe_ingredient.insert(recipeName <- recipeNameValue, ingredientName <- ingredientNameValue))
+            try db.run(recipe_ingredient.insert(recipeID <- recipeIDValue, ingredientID <- ingredientIDValue))
         } catch{
             print(error.localizedDescription)
         }
     }
     
-    //Return a list of ingredients for a given recipe
-    public func getIngredientsList(nameValue: String) -> [String]{
+    //Return a list of ingredient ids for a given recipe
+    public func getIngredientIDsList(recipeIDValue: String) -> [String]{
         //empty array
         var ingredientsList: [String] = []
         
         do{
             
             //loop through
-            for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(recipeName == nameValue)){
+            for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(recipeID == recipeIDValue)){
                 //append object to array
-                ingredientsList.append(recipe_ingredient_item[ingredientName])
+                ingredientsList.append(recipe_ingredient_item[ingredientID])
             }
         } catch{
             print(error.localizedDescription)
@@ -81,24 +81,20 @@ class Recipe_Ingredient_DB{
         return ingredientsList
     }
     
-    //Returns a list of ingredients needed for a given list of recipes
-    public func getAllIngredientsNeeded(recipesList: [Recipe]) -> Set<String>{
+    //Returns a list of ingredient ids needed for a given list of recipes
+    public func getAllIngredientIDsNeeded(recipesList: [Recipe]) -> Set<String>{
         var ingredientsList = Set<String>()
         
         do{
             for recipeItem in recipesList{
                 //loop through
-                for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(recipeName == recipeItem.name)){
+                for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(recipeID == recipeItem.id.uuidString)){
                     //append object to array
-                    ingredientsList.insert(recipe_ingredient_item[ingredientName])
+                    ingredientsList.insert(recipe_ingredient_item[ingredientID])
                 }
             }
         }catch{
             print(error.localizedDescription)
-        }
-        print("Shopping List")
-        for ingredientValue in ingredientsList{
-            print(ingredientValue)
         }
         return ingredientsList
     }
@@ -106,10 +102,10 @@ class Recipe_Ingredient_DB{
     
     
     //function to delete all recipe->ingredient relations for a given RECIPE
-    public func deleteRecipe(recipeNameValue: String){
+    public func deleteRecipe(recipeIDValue: String){
         do{
             //for recipe_ingredient_row in try db.prepare(recipe_ingredient.where(recipeName == recipeNameValue)) {
-            let recipe_ingredient_table: Table = recipe_ingredient.filter(recipeNameValue == recipeName)
+            let recipe_ingredient_table: Table = recipe_ingredient.filter(recipeID == recipeIDValue)
             try db.run(recipe_ingredient_table.delete())
         }catch{
             print(error.localizedDescription)
@@ -119,8 +115,8 @@ class Recipe_Ingredient_DB{
     //function to delete all recipe->ingredient relations for a given INGREDIENT
     public func deleteIngredient(ingredient: Ingredient){
         do{
-            let ingredientNameValue = ingredient.name
-            let recipe_ingredient_table: Table = recipe_ingredient.filter(ingredientNameValue == ingredientName)
+            let ingredientIDValue = ingredient.id.uuidString
+            let recipe_ingredient_table: Table = recipe_ingredient.filter(ingredientID == ingredientIDValue)
             try db.run(recipe_ingredient_table.delete())
         }catch{
             print(error.localizedDescription)

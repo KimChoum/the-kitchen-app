@@ -23,7 +23,7 @@ struct PantryView: View {
     @State var inStockNum: Int = 0
     //variable to see if ingredient has been clicked on
     @State var ingredientSelected: Bool = false
-    @State var selectedIngredientName: String = ""
+    @State var selectedIngredientID: String = ""
     //variable to see if ingredients was selected
     @State var viewAllIngredientsSelected: Bool = false
     
@@ -45,14 +45,14 @@ struct PantryView: View {
                 ScrollView(.vertical){
                     VStack{
                         //navigation link to view ingredient view details
-                        NavigationLink (destination: ViewIngredientView(name: self.$selectedIngredientName), isActive: self.$ingredientSelected){
+                        NavigationLink (destination: ViewIngredientView(id: self.$selectedIngredientID), isActive: self.$ingredientSelected){
                             EmptyView()
                         }
                         //print each ingredient
                         ForEach(self.ingredients) { ingredientModel in
                             HStack{
                                 Button(action: {
-                                    self.selectedIngredientName = ingredientModel.name
+                                    self.selectedIngredientID = ingredientModel.id.uuidString
                                     self.ingredientSelected = true
                                 }, label: {
                                     Text(ingredientModel.name)
@@ -69,13 +69,11 @@ struct PantryView: View {
                     }
                 }
                 .onAppear(perform: {
-                    self.inStockNum = Ingredient_DB().numberOfIngredients()
                     self.ingredients = Ingredient_DB().getIngredients()
                 })
             }
             //load data to array
             .onAppear(perform: {
-                self.inStockNum = Ingredient_DB().numberOfIngredients()
                 self.ingredients = Ingredient_DB().getIngredients()
                 })
                 

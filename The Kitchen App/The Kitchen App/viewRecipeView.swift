@@ -9,9 +9,10 @@ import SwiftUI
 
 struct viewRecipeView: View {
     //Name of recipe recived from revious view
-    @Binding var name: String
+    @Binding var id: String
     
     //variables to hold instructions and ingredients
+    @State var name: String = ""
     @State var instructions: String = ""
     @State var ingredients: [Ingredient] = []
     @State var onShoppingList: Bool = false
@@ -21,7 +22,7 @@ struct viewRecipeView: View {
     
     //variable to see if ingredient has been clicked on
     @State var ingredientSelected: Bool = false
-    @State var selectedIngredientName: String = ""
+    @State var selectedIngredientID: String = ""
     
     //To return to previous view
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -34,7 +35,7 @@ struct viewRecipeView: View {
                     Toggle("", isOn: self.$onShoppingList)
                         .onChange(of: onShoppingList, perform: { value in
                             //call DB to update user with new values
-                            Recipe_DB().updateOnShoppingList(nameValue: self.name, onShoppingListValue: self.onShoppingList)
+                            Recipe_DB().updateOnShoppingList(recipeIDValue: self.id, onShoppingListValue: self.onShoppingList)
                             print(value)
                             print("Are ingredients here?")
                             for ingredient in ingredients {
@@ -53,13 +54,13 @@ struct viewRecipeView: View {
                 
                 //print each ingredient
                 //navigation link to view ingredient view details
-                NavigationLink (destination: ViewIngredientView(name: self.$selectedIngredientName), isActive: self.$ingredientSelected){
+                NavigationLink (destination: ViewIngredientView(id: self.$selectedIngredientID), isActive: self.$ingredientSelected){
                     EmptyView()
                 }
                 ForEach(self.ingredients) { ingredientModel in
                     HStack{
                         Button(action: {
-                            self.selectedIngredientName = ingredientModel.name
+                            self.selectedIngredientID = ingredientModel.id.uuidString
                             self.ingredientSelected = true
                         }, label: {
                             Text(ingredientModel.name)
@@ -76,17 +77,15 @@ struct viewRecipeView: View {
         //populate instructions and ingredient variables
         .onAppear(perform: {
             //get data from database
-            let recipeModel: Recipe = Recipe_DB().getRecipe(nameValue: self.name)
+            let recipeModel: Recipe = Recipe_DB().getRecipe(recipeIDValue: self.id)
             //get list of ingredient names from Recipe_Ingredient
-            let ingredientNamesList: [String] = Recipe_Ingredient_DB().getIngredientsList(nameValue: self.name)
-            //use list of ingredient names to get list of ingredient objects from Ingredient_DB
-            print("call ingredients_DB to get recipe ingredients")
-            let listOfIngredients: [Ingredient] = Ingredient_DB().getRecipeIngredients(ingredientsList: ingredientNamesList)
+            let listOfIngredients: [Ingredient] = Ingredient_DB().getRecipeIngredients(ingredientIDList: Recipe_Ingredient_DB().getIngredientIDsList(recipeIDValue: self.id))
             
             //populate on screen
             self.instructions = recipeModel.instructions
             self.ingredients = listOfIngredients
             self.onShoppingList = recipeModel.onShoppingList
+            self.name = recipeModel.name
         })
         .navigationBarItems(trailing:
                                 HStack{
@@ -101,12 +100,12 @@ struct viewRecipeView: View {
                     message: Text("There is no undo"),
                     primaryButton: .destructive(Text("Delete")) {
                         print("Deleting...")
-                        //TODO Remove recipe from Recipe_DB
+                        //Remove recipe from Recipe_DB
                         let recipeDB: Recipe_DB = Recipe_DB()
-                        recipeDB.deleteRecipe(recipeName: self.name)
-                        //TODO Remove recipe from Recipe_Igredient_DB
+                        recipeDB.deleteRecipe(recipeIDValue: self.id)
+                        //Remove recipe from Recipe_Igredient_DB
                         let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-                        recipeIngredientDB.deleteRecipe(recipeNameValue: self.name)
+                        recipeIngredientDB.deleteRecipe(recipeIDValue: self.id)
                         //return to previous screen
                         self.mode.wrappedValue.dismiss()
                     },
@@ -120,8 +119,8 @@ struct viewRecipeView: View {
 }
 
 struct viewRecipeView_Previews: PreviewProvider {
-    @State static var name: String = "Chicken"
+    @State static var id: String = ""
     static var previews: some View {
-        viewRecipeView(name: $name)
+        viewRecipeView(id: $id)
     }
 }

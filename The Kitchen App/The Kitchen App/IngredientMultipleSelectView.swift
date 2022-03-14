@@ -49,8 +49,8 @@ struct IngredientMultipleSelectView: View {
             })
             
             Button(action: {
-                //save image to file
-                fileManager.saveImage(image: recipeImage, imageName: recipeName, folderName: "recipeImages")
+                //save image to local file
+                fileManager.saveImage(image: recipeImage, imageName: recipeValue.id.uuidString, folderName: "recipeImages")
                 
                 recipeValue.instructions = recipeInstructions
                 recipeValue.name = recipeName
@@ -59,11 +59,11 @@ struct IngredientMultipleSelectView: View {
                 for ingredientValue in ingredients{
                     //if currently selected add to junction table
                     if(selectedRows.contains(ingredientValue.id)){
-                        Recipe_Ingredient_DB().recipeToIngredient(recipeNameValue: recipeValue.name, ingredientNameValue: ingredientValue.name)
+                        Recipe_Ingredient_DB().recipeToIngredient(recipeIDValue: recipeValue.id.uuidString, ingredientIDValue: ingredientValue.id.uuidString)
                     }
                 }
                 //call function to add new row in sqlite
-                Recipe_DB().addRecipe(nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
+                Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
                 self.mode.wrappedValue.dismiss()
             }, label: {Text("Add Recipe")})
         }

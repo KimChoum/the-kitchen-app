@@ -13,6 +13,8 @@ struct AddIngredientView: View {
     //vars to hold user input:
     @State var name: String = ""
     @State var inStock: Bool = false
+    @State var id: String = ""
+    @State var ingredient: Ingredient = Ingredient()
     
     //go back to homescreen after ingredient is added
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -35,7 +37,7 @@ struct AddIngredientView: View {
             //button to create new row in db
             Button(action: {
                 //call function to add new row in sqlite
-                Ingredient_DB().addIngredient(nameValue: self.name, inStockValue: self.inStock)
+                Ingredient_DB().addIngredient(idValue: self.ingredient.id.uuidString, nameValue: self.name, inStockValue: self.inStock)
                 //go back to homepage
                 self.mode.wrappedValue.dismiss()
             }, label: {Text("Add ingredient")
