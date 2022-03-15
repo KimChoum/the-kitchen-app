@@ -113,9 +113,8 @@ class Recipe_Ingredient_DB{
     }
     
     //function to delete all recipe->ingredient relations for a given INGREDIENT
-    public func deleteIngredient(ingredient: Ingredient){
+    public func deleteIngredient(ingredientIDValue: String){
         do{
-            let ingredientIDValue = ingredient.id.uuidString
             let recipe_ingredient_table: Table = recipe_ingredient.filter(ingredientID == ingredientIDValue)
             try db.run(recipe_ingredient_table.delete())
         }catch{

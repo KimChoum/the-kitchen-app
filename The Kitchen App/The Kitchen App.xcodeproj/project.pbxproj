@@ -10,6 +10,7 @@
 		D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52D27D7042400215801 /* ShoppingListView.swift */; };
 		D503C53027D989AE00215801 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52F27D989AE00215801 /* ImagePicker.swift */; };
 		D503C53227DEB22D00215801 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C53127DEB22D00215801 /* LocalFileManager.swift */; };
+		D503C53927DFA24500215801 /* IngredientListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C53827DFA24500215801 /* IngredientListItem.swift */; };
 		D51335D627BDD5B80012B972 /* The_Kitchen_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */; };
 		D51335D827BDD5B80012B972 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335D727BDD5B80012B972 /* ContentView.swift */; };
 		D51335DA27BDD5BA0012B972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51335D927BDD5BA0012B972 /* Assets.xcassets */; };
@@ -56,6 +57,7 @@
 		D503C52D27D7042400215801 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		D503C52F27D989AE00215801 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D503C53127DEB22D00215801 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		D503C53827DFA24500215801 /* IngredientListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListItem.swift; sourceTree = "<group>"; };
 		D51335D227BDD5B80012B972 /* The Kitchen App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Kitchen App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D51335D527BDD5B80012B972 /* The_Kitchen_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = The_Kitchen_AppApp.swift; sourceTree = "<group>"; };
 		D51335D727BDD5B80012B972 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
 				D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */,
 				D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */,
+				D503C53827DFA24500215801 /* IngredientListItem.swift */,
 				D51335DB27BDD5BA0012B972 /* Preview Content */,
 			);
 			path = "The Kitchen App";
@@ -363,6 +366,7 @@
 				D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */,
 				D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */,
 				D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */,
+				D503C53927DFA24500215801 /* IngredientListItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

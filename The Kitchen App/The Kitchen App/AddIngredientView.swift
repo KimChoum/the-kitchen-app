@@ -9,12 +9,12 @@ import SwiftUI
 
 struct AddIngredientView: View {
     
-    
+    let catagories = ["None", "Produce", "Dairy/Eggs", "Butcher", "Bakery", "Canned Goods", "Baking", "Frozen", "Bulk", "Snack Foods", "Spices/Seasonings", "Pasta/Rice", "Drinks", "Liquor", "Condiments"]
     //vars to hold user input:
     @State var name: String = ""
     @State var inStock: Bool = false
-    @State var id: String = ""
-    @State var ingredient: Ingredient = Ingredient()
+    @State var id: String = UUID().uuidString
+    @State var catagorySelected: String = "None"
     
     //go back to homescreen after ingredient is added
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -27,7 +27,13 @@ struct AddIngredientView: View {
                 .padding(10)
                 .background(Color(.systemGray6))
                 .cornerRadius(5)
-                //.disableAutocorrection(true)
+            //select a catagory
+            Picker("Select Catagory", selection: $catagorySelected) {
+                            ForEach(catagories, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle(.menu)
             //create entry to enable in stock
             Toggle(isOn: $inStock) {
                 Text("In stock")
@@ -37,7 +43,7 @@ struct AddIngredientView: View {
             //button to create new row in db
             Button(action: {
                 //call function to add new row in sqlite
-                Ingredient_DB().addIngredient(idValue: self.ingredient.id.uuidString, nameValue: self.name, inStockValue: self.inStock)
+                Ingredient_DB().addIngredient(idValue: self.id, nameValue: self.name, inStockValue: self.inStock, catagoryValue: self.catagorySelected)
                 //go back to homepage
                 self.mode.wrappedValue.dismiss()
             }, label: {Text("Add ingredient")

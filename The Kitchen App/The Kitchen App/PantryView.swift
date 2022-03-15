@@ -27,58 +27,49 @@ struct PantryView: View {
     //variable to see if ingredients was selected
     @State var viewAllIngredientsSelected: Bool = false
     
+    @State var inStock: Bool = false
+    
     var body: some View {
-            VStack{
-                HStack{
-                    //navigation link to view recipes in full page view
-                    NavigationLink (destination: PantryView(), isActive: self.$viewAllIngredientsSelected){
-                        EmptyView()
-                    }
-                    //button to view all recipes
-                    Button(action: {self.viewAllIngredientsSelected = true}, label: {Text("Ingredients").font(.title).foregroundColor(Color(labelColor))})
-                    Spacer()
-                    //Add ingredient link
-                    NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
-                            .padding(.trailing, 8)
-                    })}
-                .background(Color(backGroundColor))
-                ScrollView(.vertical){
-                    VStack{
-                        //navigation link to view ingredient view details
-                        NavigationLink (destination: ViewIngredientView(id: self.$selectedIngredientID), isActive: self.$ingredientSelected){
-                            EmptyView()
-                        }
-                        //print each ingredient
-                        ForEach(self.ingredients) { ingredientModel in
-                            HStack{
-                                Button(action: {
-                                    self.selectedIngredientID = ingredientModel.id.uuidString
-                                    self.ingredientSelected = true
-                                }, label: {
-                                    Text(ingredientModel.name)
-                                        .frame(maxWidth: 350, minHeight: 35, alignment: .leading)
-                                        .foregroundColor(Color(labelColor))
-                                        .background(Color(ingredientModel.inStock ? inStockColor : outOfStockColor))
-                                        .clipShape(RoundedRectangle(cornerRadius: 7))
-                                        .shadow(radius: 2)
-                                    //.border(Color(labelColor))
-                                })
-                            }
-                        }
-                        
-                    }
+        VStack{
+            HStack{
+                //navigation link to view recipes in full page view
+                NavigationLink (destination: PantryView(), isActive: self.$viewAllIngredientsSelected){
+                    EmptyView()
                 }
-                .onAppear(perform: {
-                    self.ingredients = Ingredient_DB().getIngredients()
-                })
+                //button to view all recipes
+                Button(action: {self.viewAllIngredientsSelected = true}, label: {Text("Ingredients").font(.title).foregroundColor(Color(labelColor))})
+                Spacer()
+                //Add ingredient link
+                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
+                        .padding(.trailing, 8)
+                })}
+            .background(Color(backGroundColor))
+            ScrollView(.vertical){
+                VStack{
+                    //print each ingredient
+                    ForEach(self.ingredients) { ingredientModel in
+                        ZStack(alignment: Alignment(horizontal: .trailing, vertical: .center)){
+                            IngredientListItem(ingredient: ingredientModel)
+//                            HStack{
+//                                Toggle("", isOn: self.$inStock)
+//                                    .onChange(of: inStock, perform: { value in
+//                                        //call DB to update user with new values
+//                                        Ingredient_DB().updateIngredient(idValue: ingredientModel.id.uuidString, nameValue: ingredientModel.name, inStockValue: ingredientModel.inStock)
+//                                        self.ingredients = Ingredient_DB().getIngredients()
+//                                    })
+//                                    .onAppear(perform: {self.inStock = ingredientModel.inStock})
+//                            }
+                        }
+                    }
+                    
+                }
             }
-            //load data to array
             .onAppear(perform: {
+                print("Load ingredients from DB")
                 self.ingredients = Ingredient_DB().getIngredients()
-                })
-                
+            })
         }
-
+    }
 }
 
 

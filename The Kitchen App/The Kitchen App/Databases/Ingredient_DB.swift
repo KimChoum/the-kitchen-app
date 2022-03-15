@@ -20,7 +20,7 @@ class Ingredient_DB{
     private var id: Expression<String>!
     private var name: Expression<String>!
     private var inStock: Expression<Bool>!
-    //private var id: Expression<Int64>!
+    private var catagory: Expression<String>!
     
     init(){
         
@@ -39,6 +39,7 @@ class Ingredient_DB{
             id = Expression<String>("id")
             name = Expression<String>("name")
             inStock = Expression<Bool>("inStock")
+            catagory = Expression<String>("catagory")
             //id = Expression<Int64>("id")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_ingredient_db_created")){
@@ -47,7 +48,7 @@ class Ingredient_DB{
                     t.column(id, primaryKey: true)
                     t.column(name)
                     t.column(inStock)
-                    //t.column(id, primaryKey: true)
+                    t.column(catagory)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_ingredient_db_created")
@@ -58,10 +59,10 @@ class Ingredient_DB{
 
     }
     
-    public func addIngredient(idValue: String, nameValue: String, inStockValue: Bool){
+    public func addIngredient(idValue: String, nameValue: String, inStockValue: Bool, catagoryValue: String){
         
         do{
-            try db.run(ingredients.insert(id <- idValue, name <- nameValue, inStock <- inStockValue))
+            try db.run(ingredients.insert(id <- idValue, name <- nameValue, inStock <- inStockValue, catagory <- catagoryValue))
         } catch{
             print(error.localizedDescription)
         }
@@ -75,7 +76,7 @@ class Ingredient_DB{
         var ingredientsList: [Ingredient] = []
          
         //get ingredients in order of in stock
-        ingredients = ingredients.order(inStock.desc, name.asc)
+        ingredients = ingredients.order(inStock.desc, catagory.asc, name.asc)
         
         do{
             
@@ -88,6 +89,7 @@ class Ingredient_DB{
                 ingredientReturn.id = UUID(uuidString: ingredient[id])!
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
+                ingredientReturn.catagory = ingredient[catagory]
                 //append object to array
                 ingredientsList.append(ingredientReturn)
             }
@@ -140,11 +142,10 @@ class Ingredient_DB{
     }
     
     //function to delete an ingredient from the databse
-    public func deleteIngredient(ingredient: Ingredient){
+    public func deleteIngredient(ingredientID: String){
         do{
-            let ingredientID = ingredient.id
-            //get recipe using name
-            let ingredient: Table = ingredients.filter(id == ingredientID.uuidString)
+            //get recipe using id
+            let ingredient: Table = ingredients.filter(id == ingredientID)
             
             //delete recipe by running the delete query
             try db.run(ingredient.delete())
@@ -164,6 +165,7 @@ class Ingredient_DB{
                 ingredientReturn.id = UUID(uuidString: ingredient[id])!
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
+                ingredientReturn.catagory = ingredient[catagory]
             }
         }catch{
             print(error.localizedDescription)

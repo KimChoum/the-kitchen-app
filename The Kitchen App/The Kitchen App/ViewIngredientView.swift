@@ -50,6 +50,28 @@ struct ViewIngredientView: View {
         .navigationBarItems(trailing:
                                 HStack{
             Spacer()
+            //Delete Button
+            Button("Delete") {
+                showingAlert = true
+            }
+            .padding()
+            .alert(isPresented:$showingAlert) {
+                Alert(
+                    title: Text("Are you sure you want to delete this?"),
+                    message: Text("There is no undo"),
+                    primaryButton: .destructive(Text("Delete")) {
+                        print("Deleting...")
+                        //Remove recipe from Recipe_DB
+                        Ingredient_DB().deleteIngredient(ingredientID: self.id)
+                        //Remove recipe from Recipe_Igredient_DB
+                        Recipe_Ingredient_DB().deleteIngredient(ingredientIDValue: self.id)
+                        //return to previous screen
+                        self.mode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+                Spacer()
             NavigationLink(destination: EditIngredientView(ingredientID: self.$id), label: {Text("Edit")})
         }
         )

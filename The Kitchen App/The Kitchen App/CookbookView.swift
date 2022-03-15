@@ -65,7 +65,8 @@ struct CookbookView: View {
                             VStack {
                                 Image(uiImage: fileManager.getImage(imageName: recipeModel.id.uuidString, folderName: "recipeImages") ?? UIImage(named: "test-recipe-image")!)
                                     .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(maxHeight: 150)
                                 
                                 HStack {
                                     VStack(alignment: .leading) {
@@ -89,13 +90,15 @@ struct CookbookView: View {
                                     
                                     Spacer()
                                 }
-                                .padding()
+                                .background(Color(.white))
+                                .padding(.bottom, 10)
                             }
                             .cornerRadius(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color(.sRGB, red: 150/255, green: 150/255, blue: 150/255, opacity: 0.1), lineWidth: 1)
                             )
+                            .shadow(radius: 10)
                             .padding([.top, .horizontal])
                             //.frame(height: 150)
                         })

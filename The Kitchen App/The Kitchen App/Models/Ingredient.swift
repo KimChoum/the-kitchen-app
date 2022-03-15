@@ -11,4 +11,5 @@ class Ingredient: Identifiable{
     public var id = UUID()
     public var name: String = ""
     public var inStock: Bool = false
+    public var catagory: String = ""
 }

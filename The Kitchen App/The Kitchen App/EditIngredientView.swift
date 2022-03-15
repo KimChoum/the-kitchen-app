@@ -29,27 +29,7 @@ struct EditIngredientView: View {
             NavigationLink (destination: ContentView(), isActive: self.$ingredientButtonPressed){
                 EmptyView()
             }
-            //Delete Button
-            HStack{
-                Spacer()
-                Button(action: {
-                    let ingredientDB: Ingredient_DB = Ingredient_DB()
-                    ingredientDB.deleteIngredient(ingredient: self.ingredient)
-                    //TODO Remove ingredient from Recipe_Igredient_DB
-                    let recipeIngredientDB: Recipe_Ingredient_DB = Recipe_Ingredient_DB()
-                    recipeIngredientDB.deleteIngredient(ingredient: self.ingredient)
-                    //self.ingredientButtonPressed = true
-                    self.mode.wrappedValue.dismiss()
-                }, label: {
-                    Text("Delete")
-                        .foregroundColor(.red)
-                })
-                    .buttonStyle(PlainButtonStyle())
-                    .padding()
-            }
             //create name entry field:
-            //            Text(name)
-            //                .font(.title)
             TextField("Ingredient name", text: $name)
                 .padding(10)
                 .background(Color(.systemGray6))
