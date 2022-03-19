@@ -15,4 +15,5 @@ class Recipe: Identifiable{
     public var id = UUID()
     public var onShoppingList: Bool = false
     public var image: UIImage = UIImage(systemName: "photo")!
+    public var mealType: String = ""
 }

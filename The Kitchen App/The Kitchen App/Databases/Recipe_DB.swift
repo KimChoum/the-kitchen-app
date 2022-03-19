@@ -22,6 +22,7 @@ class Recipe_DB{
     private var instructions: Expression<String>!
     private var onShoppingList: Expression<Bool>!
     private var id: Expression<String>!
+    private var mealType: Expression<String>!
     //private var ingredients: Expression<[Ingredient]>!
     
     init(){
@@ -41,6 +42,7 @@ class Recipe_DB{
             name = Expression<String>("name")
             instructions = Expression<String>("instructions")
             onShoppingList = Expression<Bool>("onShoppingList")
+            mealType = Expression<String>("mealType")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_recipe_db_created")){
                 //case that table does not exist yet
@@ -49,6 +51,7 @@ class Recipe_DB{
                     t.column(name)
                     t.column(instructions)
                     t.column(onShoppingList)
+                    t.column(mealType)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_recipe_db_created")
@@ -60,10 +63,10 @@ class Recipe_DB{
     }
     
     //Add recipe to database
-    public func addRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String){
+    public func addRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String){
         
         do{
-            try db.run(recipes.insert(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false))
+            try db.run(recipes.insert(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue))
         } catch{
             print(error.localizedDescription)
         }
@@ -91,6 +94,7 @@ class Recipe_DB{
                 recipeReturn.instructions = recipe[instructions]
                 recipeReturn.onShoppingList = recipe[onShoppingList]
                 recipeReturn.id = UUID(uuidString: recipe[id])!
+                recipeReturn.mealType = recipe[mealType]
                 //append object to array
                 recipesList.append(recipeReturn)
             }

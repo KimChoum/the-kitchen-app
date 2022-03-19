@@ -1,20 +1,13 @@
 //
-//  ShoppingListView.swift
+//  ShoppingListViewWithoutNavigation.swift
 //  The Kitchen App
 //
-//  Created by Dean Stirrat on 3/7/22.
+//  Created by Dean Stirrat on 3/16/22.
 //
 
 import SwiftUI
 
-struct ShoppingListView: View {
-    //list of colors to be used
-    //UIColor(Color(0x49393B))
-    let backGroundColor = UIColor(Color.white)
-    let labelColor = UIColor(Color(0x1F271B))
-    let inStockColor = UIColor(Color(0x6aab7d))
-    let outOfStockColor = UIColor(Color(0xEE6352))
-    let accentColor = UIColor(Color(0xFCF6B1))
+struct ShoppingListViewWithoutNavigation: View {
     
     //array to hold ingredients/recieps:
     @State var recipesToMake: [Recipe] = []
@@ -32,33 +25,45 @@ struct ShoppingListView: View {
     
     
     var body: some View {
-        //navigation link to view shopping list
-        NavigationLink (destination: ShoppingListView(), isActive: self.$viewShoppingListSelected){
-            EmptyView()
-        }
-        //navigation link to view ingredient view details
-        //        NavigationLink (destination: ViewIngredientView(name: self.$selectedIngredientName), isActive: self.$ingredientSelected){
-        //            EmptyView()
-        //        }
         HStack{
-            Button(action: {
-                self.viewShoppingListSelected = true
-            }, label: {Text("Shopping list").font(.title).foregroundColor(Color(labelColor))})
+            Text("Shopping list")
+                .font(.title)
+                .foregroundColor(Color(.black))
             Spacer()
         }
         ScrollView{
+            
+            if(recipesToMake.isEmpty){
+                Text("\n\nShopping list is empty\n\n")
+                    .font(.title)
+                    .foregroundColor(.red)
+                Text("Add ingredients to shopping list")
+                    .font(.body)
+                Text("or")
+                Text("select recipes to add ingredients to list automatically")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+            }
+            else if(ingredientsToBuy.isEmpty){
+                VStack{
+                    Text("\n\n\n\nAll ingredients for selected recipes are in stock!")
+                        .font(.title)
+                        .multilineTextAlignment(.center)
+                    Image(systemName: "checkmark.square")
+                        .foregroundColor(.green)
+                }
+            }
             VStack{
                 //print each ingredient
                 ForEach(self.ingredientsToBuy) { ingredientModel in
                     Button(action: {
                         self.selectedIngredientName = ingredientModel.name
-                        //                        self.ingredientSelected = true
                         self.showingAlert = true
                     }, label: {
                         Text(ingredientModel.name)
                             .frame(maxWidth: 350, minHeight: 35, alignment: .leading)
-                            .foregroundColor(Color(labelColor))
-                            .background(Color(ingredientModel.inStock ? inStockColor : outOfStockColor))
+                            .foregroundColor(Color(.black))
+                            .background(Color(ingredientModel.inStock ? .green : .red))
                             .clipShape(RoundedRectangle(cornerRadius: 7))
                             .shadow(radius: 2)
                         //.border(Color(labelColor))
@@ -67,7 +72,7 @@ struct ShoppingListView: View {
                             Button("Cencel") { }
                             Button("Yes") {
                                 //call DB to update user with new values
-                                Ingredient_DB().updateIngredient(idValue: self.selectedIngredientID, nameValue: self.selectedIngredientName, inStockValue: true)
+                                Ingredient_DB().updateIngredient(idValue: ingredientModel.id.uuidString, nameValue: ingredientModel.name, inStockValue: true)
                                 
                                 self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredientIDs: Recipe_Ingredient_DB().getAllIngredientIDsNeeded(recipesList: recipesToMake))
                             }
@@ -84,8 +89,9 @@ struct ShoppingListView: View {
     }
 }
 
-struct ShoppingListView_Previews: PreviewProvider {
+struct ShoppingListViewWithoutNavigation_Previews: PreviewProvider {
+    
     static var previews: some View {
-        ShoppingListView()
+        ShoppingListViewWithoutNavigation()
     }
 }

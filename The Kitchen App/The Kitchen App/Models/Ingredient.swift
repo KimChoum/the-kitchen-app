@@ -7,7 +7,16 @@
 
 import Foundation
 
-class Ingredient: Identifiable{
+class Ingredient: Identifiable, Hashable{
+    static func == (lhs: Ingredient, rhs: Ingredient) -> Bool {
+        if (lhs.id == rhs.id) {return true}
+        else {return false}
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     public var id = UUID()
     public var name: String = ""
     public var inStock: Bool = false

@@ -20,8 +20,10 @@ struct IngredientMultipleSelectView: View {
     
     //Name of recipe recived from previous view
     @Binding var recipeName: String
+    
     @Binding var recipeInstructions: String
     @Binding var recipeImage: UIImage
+    @Binding var recipeMealType: String
     
     @State var recipeValue: Recipe = Recipe()
     @State var selectedRows = Set<UUID>()
@@ -33,10 +35,10 @@ struct IngredientMultipleSelectView: View {
             HStack{
                 Text("Ingredients list")
                     .font(.title)
-                    .foregroundColor(Color(labelColor))
+                    .foregroundColor(Color(.black))
                 Spacer()
                 //Add ingredient link
-                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
+                NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(.black))
                     .padding(.trailing, 8)})
             }
             List(selection: $selectedRows){
@@ -54,6 +56,7 @@ struct IngredientMultipleSelectView: View {
                 
                 recipeValue.instructions = recipeInstructions
                 recipeValue.name = recipeName
+                recipeValue.mealType = recipeMealType
                 
                 //add all selected ingredients to junction table
                 for ingredientValue in ingredients{
@@ -63,7 +66,7 @@ struct IngredientMultipleSelectView: View {
                     }
                 }
                 //call function to add new row in sqlite
-                Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions)
+                Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType)
                 self.mode.wrappedValue.dismiss()
             }, label: {Text("Add Recipe")})
         }
@@ -74,7 +77,8 @@ struct IngredientMultipleSelectView_Previews: PreviewProvider {
     @State static var recipeName: String = ""
     @State static var recipeInstructions: String = ""
     @State static var recipeImage: UIImage = UIImage()
+    @State static var recipeMealType: String = ""
     static var previews: some View {
-        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, ingredients: [Ingredient()])
+        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, recipeMealType: $recipeMealType, ingredients: [Ingredient()])
     }
 }

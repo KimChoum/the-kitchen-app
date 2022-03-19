@@ -9,43 +9,34 @@ import SwiftUI
 
 struct ViewIngredientView: View {
     //Name of recipe recived from revious view
-    @Binding var id: String
-    
-    //variables to hold ingredient
-    //@State var ingredientValue: Ingredient = Ingredient()
-    @State var ingredientName: String = ""
-    @State var inStock: Bool = false
+    @Binding var ingredient: Ingredient
     
     //variable for if delte warning message shows
     @State private var showingAlert: Bool = false
+    
+    @State var inStock: Bool = false
     
     //To return to previous view
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
         VStack {
-            Text(ingredientName)
+            Text(ingredient.name)
                 .font(.title)
                 .padding(.leading, 5)
             Text(inStock ? "In Stock" : "Out Of Stock")
                 .font(.title)
                 .padding(.leading, 5)
                 .foregroundColor(inStock ? .green : .red)
-            Toggle("", isOn: self.$inStock)
+            Toggle("", isOn: $inStock)
                 .frame(width: 1, alignment: .center)
-            .onChange(of: inStock, perform: { value in
+                .onChange(of: inStock, perform: { value in
                 //call DB to update user with new values
-                Ingredient_DB().updateIngredient(idValue: self.id, nameValue: self.ingredientName, inStockValue: self.inStock)
-                print(value)
+                    ingredient.inStock = inStock
+                    Ingredient_DB().updateIngredient(idValue: self.ingredient.id.uuidString, nameValue: ingredient.name, inStockValue: ingredient.inStock)
             })
         }
-        //populate instructions and ingredient variables
         .onAppear(perform: {
-            //Ingredient data from DB
-            let ingredientModel: Ingredient = Ingredient_DB().getIngredient(idValue: self.id)
-            
-            //populate on screen
-            self.ingredientName = ingredientModel.name
-            self.inStock = ingredientModel.inStock
+            inStock = ingredient.inStock
         })
         .navigationBarItems(trailing:
                                 HStack{
@@ -60,11 +51,10 @@ struct ViewIngredientView: View {
                     title: Text("Are you sure you want to delete this?"),
                     message: Text("There is no undo"),
                     primaryButton: .destructive(Text("Delete")) {
-                        print("Deleting...")
                         //Remove recipe from Recipe_DB
-                        Ingredient_DB().deleteIngredient(ingredientID: self.id)
+                        Ingredient_DB().deleteIngredient(ingredientID: ingredient.id.uuidString)
                         //Remove recipe from Recipe_Igredient_DB
-                        Recipe_Ingredient_DB().deleteIngredient(ingredientIDValue: self.id)
+                        Recipe_Ingredient_DB().deleteIngredient(ingredientIDValue: ingredient.id.uuidString)
                         //return to previous screen
                         self.mode.wrappedValue.dismiss()
                     },
@@ -72,18 +62,16 @@ struct ViewIngredientView: View {
                 )
             }
                 Spacer()
-            NavigationLink(destination: EditIngredientView(ingredientID: self.$id), label: {Text("Edit")})
-        }
-        )
-        //.navigationBarTitle(self.name)
+            NavigationLink(destination: EditIngredientView(ingredient: $ingredient), label: {Text("Edit")})
+        })
     }
 }
 
 struct ViewIngredientView_Previews: PreviewProvider {
-    @State static var id: String = ""
+    @State static var ingredient: Ingredient = Ingredient()
     static var previews: some View {
         Group {
-            ViewIngredientView(id: $id)
+            ViewIngredientView(ingredient: $ingredient)
         }
     }
 }

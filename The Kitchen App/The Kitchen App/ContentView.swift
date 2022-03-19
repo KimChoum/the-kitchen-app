@@ -69,46 +69,136 @@ struct ContentView: View {
     //variables for Ingredient list:
     @State var ingredients: [Ingredient] = []
     @State var inStockNum: Int = 0
-    @State var viewAllIngredientsSelected: Bool = false
     //variable to see if ingredient has been clicked on
     @State var ingredientSelected: Bool = false
-    @State var selectedIngredientName: String = ""
+    @State var selectedIngredientID: String = ""
+    //variable to see if ingredients was selected
+    @State var viewAllIngredientsSelected: Bool = false
     
-    //variables for recipe list
+    @State var inStock: Bool = false
+    
+    //variable for searching ingredients
+    @State private var searchText = ""
+    @State var ingredientSearchResults: [Ingredient] = []
+    
+    
+    
+    //file manager instance for saving images
+    public var fileManager = LocalFileManager.instance
+    
     //array to hold recipes:
     @State var recipes: [Recipe] = []
     //check if recipe is selected
     @State var recipeSelected: Bool = false
     //name of recipe to view
-    @State var selectedRecipeName: String = ""
+    @State var selectedRecipeID: String = ""
     //if view all is selected
     @State var viewAllRecipesSelected: Bool = false
+    //for search
+    @State var recipeSearchResults: [Recipe] = []
     
-    //var to see if view shopping list is pressed
-    @State var viewShoppingListSelected: Bool = false
     
     
     var body: some View {
         NavigationView{
-            ZStack{
-                Color(backGroundColor)
-                ScrollView{
+            ScrollView{
+                VStack{
+                    //Ingredient Section
                     VStack{
-                        ShoppingListView()
-                            .frame(maxHeight: 150)
-                        //Ingredient Section
-                        PantryView()
-                            .frame(maxHeight: 200)
-                        
-                        
-                        //Recipe Section
-                        CookbookView()
-                            .frame(maxHeight: .infinity)
+                        HStack{
+                            //navigation link to view recipes in full page view
+                            NavigationLink (destination: PantryViewWithoutNavigation(), isActive: self.$viewAllIngredientsSelected){
+                                EmptyView()
+                            }
+                            //button to view all recipes
+                            Button(action: {self.viewAllIngredientsSelected = true}, label: {
+                                Text("Ingredients").font(.title).foregroundColor(Color(labelColor))
+                                    .padding(.leading, 10)
+                            })
+                            Spacer()
+                            //Add ingredient link
+                            NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
+                                    .padding(.trailing, 8)
+                            })}
+                        List{
+                            ForEach(self.$ingredientSearchResults, id: \.id){ ingredientModel in
+                                //print each ingredient
+                                CardListRow(item: ingredientModel)
+                                    .listRowSeparator(.hidden)
+                            }
+                        }
+                        .frame(height: 180)
+                        .onChange(of: searchText) { searchText in
+                            if !searchText.isEmpty {
+                                ingredientSearchResults = ingredients.filter { $0.name.contains(searchText) }
+                            } else {
+                                ingredientSearchResults = ingredients
+                            }
+                        }
+                        .listStyle(.plain)
+                        .onAppear(perform: {
+                            print("Load ingredients from DB")
+                            self.ingredients = Ingredient_DB().getIngredients()
+                            self.ingredientSearchResults = Ingredient_DB().getIngredients()
+                        })
                     }
-                    .navigationBarTitle(Text("My Kitchen")).navigationBarHidden(false)
+                    //.frame(maxHeight: 220)
+                    
+                    
+                    //Recipe Section
+                    VStack{
+                        HStack{
+                            //navigation link to view recipes in full page view
+                            NavigationLink (destination: CookbookViewWithoutNavigation(), isActive: self.$viewAllRecipesSelected){
+                                EmptyView()
+                            }
+                            //button to view all recipes
+                            Button(action: {self.viewAllRecipesSelected = true}, label: {
+                                Text("Recipes").font(.title).foregroundColor(Color(labelColor))
+                                    .padding(.leading, 10)
+                            })
+                            Spacer()
+                            NavigationLink (destination: AddRecipeView(), label: { Text("Add Recipe")
+                                    .foregroundColor(Color(labelColor))
+                            }).padding(8)
+                        }
+                        .background(Color(backGroundColor))
+                        //List to show recipes:
+                        List{
+                            ForEach(self.$recipeSearchResults) { (recipeModel) in
+                                RecipeRow(item: recipeModel)
+                                    .listRowSeparator(.hidden)
+                            }
+                        }
+                        .listStyle(.plain)
+                        .frame(height: 610)
+                        .onChange(of: searchText) { searchText in
+                            if !searchText.isEmpty {
+                                recipeSearchResults = recipes.filter { $0.name.contains(searchText) }
+                            } else {
+                                recipeSearchResults = recipes
+                            }
+                        }
+                        //load data to array
+                        .onAppear(perform: {
+                            self.recipes = Recipe_DB().getRecipes()
+                            self.recipeSearchResults = recipes
+                        })
+                    }
                 }
+                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+                //.navigationBarTitle(Text("My Kitchen")).navigationBarHidden(false)
             }
-            //.edgesIgnoringSafeArea(.vertical)
+            .navigationBarItems(trailing:
+                                    HStack{
+                Spacer()
+                //Shopping List button
+                NavigationLink(destination: ShoppingListView(), label: {
+                    //Text("Shopping list")
+                    Image(systemName: "checklist")
+                })
+            }
+            )
         }
     }
 }
@@ -116,7 +206,5 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-        PantryView()
-        CookbookView()
     }
 }

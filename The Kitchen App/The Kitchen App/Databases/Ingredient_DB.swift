@@ -131,6 +131,7 @@ class Ingredient_DB{
                 ingredientReturn.id = UUID(uuidString: ingredientItem[id])!
                 ingredientReturn.name = ingredientItem[name]
                 ingredientReturn.inStock = ingredientItem[inStock]
+                ingredientReturn.catagory = ingredientItem[catagory]
                 //append object to array
                 ingredientsListReturn.append(ingredientReturn)
             }
@@ -183,6 +184,7 @@ class Ingredient_DB{
         }catch{
             print(error.localizedDescription)
         }
+        print(inStockValue)
     }
     
     //function to get a shopping list
