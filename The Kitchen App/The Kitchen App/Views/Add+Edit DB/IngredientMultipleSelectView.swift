@@ -30,10 +30,17 @@ struct IngredientMultipleSelectView: View {
     @State var ingredients: [Ingredient]
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
+    
+    //for searching
+    @State var searchText: String = ""
+    @State var searchBarShowing: Bool = true
+    @State var ingredientSearchResults: [Ingredient] = []
+    @State var isEditing: Bool = false
+    
     var body: some View {
         VStack{
             HStack{
-                Text("Ingredients list")
+                Text("Ingredients")
                     .font(.title)
                     .foregroundColor(Color(.black))
                 Spacer()
@@ -41,15 +48,51 @@ struct IngredientMultipleSelectView: View {
                 NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(.black))
                     .padding(.trailing, 8)})
             }
+            HStack {
+                TextField("Search...", text: $searchText)
+                    .padding(7)
+                    .padding(.horizontal, 25)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .onChange(of: searchText) { searchText in
+                        if !searchText.isEmpty {
+                            ingredientSearchResults = ingredients.filter { $0.name.contains(searchText) }
+                        } else {
+                            ingredientSearchResults = ingredients
+                        }
+                    }
+                    .overlay(HStack { // Add the search icon to the left
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 8)
+
+                        // If the search field is focused, add the clear (X) button
+                        if isEditing {
+                            Button(action: {
+                                self.searchText = ""
+                            }) {
+                                Image(systemName: "multiply.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8)
+                            }
+                        }
+                    }).padding(.horizontal, 10)
+                    .onTapGesture {
+                        self.isEditing = true
+                    }
+            }
             List(selection: $selectedRows){
-                ForEach(ingredients){ ingredient in
+                ForEach(ingredientSearchResults){ ingredient in
                     IngredientRow(ingredient: ingredient, selectedItems: $selectedRows)
                 }
             }   //load data to array
+            .frame(height: 400)
             .onAppear(perform: {
                 self.ingredients = Ingredient_DB().getIngredients()
+                self.ingredientSearchResults = ingredients
             })
-            
+        }.toolbar(content: {
             Button(action: {
                 //save image to local file
                 fileManager.saveImage(image: recipeImage, imageName: recipeValue.id.uuidString, folderName: "recipeImages")
@@ -68,8 +111,15 @@ struct IngredientMultipleSelectView: View {
                 //call function to add new row in sqlite
                 Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType)
                 self.mode.wrappedValue.dismiss()
-            }, label: {Text("Add Recipe")})
-        }
+            }, label: {
+                Text("Done")
+                    .padding(1)
+                    .padding(.horizontal, 2)
+                    .foregroundColor(.white)
+                    .background(Color(.systemBlue))
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+            })
+        })
     }
 }
 

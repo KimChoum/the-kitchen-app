@@ -117,8 +117,12 @@ struct ContentView: View {
                             })
                             Spacer()
                             //Add ingredient link
-                            NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(labelColor))
-                                    .padding(.trailing, 8)
+                            NavigationLink (destination: AddIngredientView(), label: {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                        .frame(width: 20, height: 20)
+                                    .accentColor(.blue)
+                                    .padding(.trailing, 25)
                             })}
                         List{
                             ForEach(self.$ingredientSearchResults, id: \.id){ ingredientModel in
@@ -158,8 +162,12 @@ struct ContentView: View {
                                     .padding(.leading, 10)
                             })
                             Spacer()
-                            NavigationLink (destination: AddRecipeView(), label: { Text("Add Recipe")
-                                    .foregroundColor(Color(labelColor))
+                            NavigationLink (destination: AddRecipeView(), label: {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                        .frame(width: 20, height: 20)
+                                    .accentColor(.blue)
+                                    .padding(.trailing, 25)
                             }).padding(8)
                         }
                         .background(Color(backGroundColor))
@@ -187,13 +195,13 @@ struct ContentView: View {
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                //.navigationBarTitle(Text("My Kitchen")).navigationBarHidden(false)
+                .navigationBarTitle(Text("My Kitchen"))
             }
             .navigationBarItems(trailing:
                                     HStack{
                 Spacer()
                 //Shopping List button
-                NavigationLink(destination: ShoppingListView(), label: {
+                NavigationLink(destination: ShoppingListViewWithoutNavigation(), label: {
                     //Text("Shopping list")
                     Image(systemName: "checklist")
                 })

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52D27D7042400215801 /* ShoppingListView.swift */; };
 		D503C53027D989AE00215801 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C52F27D989AE00215801 /* ImagePicker.swift */; };
 		D503C53227DEB22D00215801 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C53127DEB22D00215801 /* LocalFileManager.swift */; };
 		D503C53927DFA24500215801 /* IngredientListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503C53827DFA24500215801 /* IngredientListItem.swift */; };
@@ -20,6 +19,7 @@
 		D51335F327BDD5BA0012B972 /* The_Kitchen_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51335F227BDD5BA0012B972 /* The_Kitchen_AppUITestsLaunchTests.swift */; };
 		D51A60A827E4B14200EF777C /* RecipeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51A60A727E4B14200EF777C /* RecipeItem.swift */; };
 		D51A60AA27E4B88300EF777C /* RecipeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51A60A927E4B88300EF777C /* RecipeRow.swift */; };
+		D51A60AD27E6279900EF777C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51A60AC27E6279900EF777C /* SearchBar.swift */; };
 		D533E76427E12FA400AA9B52 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533E76327E12FA400AA9B52 /* Styles.swift */; };
 		D533E76927E1997200AA9B52 /* PantryViewWithoutNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533E76827E1997200AA9B52 /* PantryViewWithoutNavigation.swift */; };
 		D533E76B27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533E76A27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift */; };
@@ -59,7 +59,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D503C52D27D7042400215801 /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		D503C52F27D989AE00215801 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D503C53127DEB22D00215801 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		D503C53827DFA24500215801 /* IngredientListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientListItem.swift; sourceTree = "<group>"; };
@@ -75,6 +74,7 @@
 		D51335F227BDD5BA0012B972 /* The_Kitchen_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = The_Kitchen_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D51A60A727E4B14200EF777C /* RecipeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeItem.swift; sourceTree = "<group>"; };
 		D51A60A927E4B88300EF777C /* RecipeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRow.swift; sourceTree = "<group>"; };
+		D51A60AC27E6279900EF777C /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		D533E76327E12FA400AA9B52 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		D533E76827E1997200AA9B52 /* PantryViewWithoutNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryViewWithoutNavigation.swift; sourceTree = "<group>"; };
 		D533E76A27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookbookViewWithoutNavigation.swift; sourceTree = "<group>"; };
@@ -210,17 +210,26 @@
 			path = "The Kitchen AppUITests";
 			sourceTree = "<group>";
 		};
+		D51A60AB27E6274500EF777C /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				D51A60A927E4B88300EF777C /* RecipeRow.swift */,
+				D51A60A727E4B14200EF777C /* RecipeItem.swift */,
+				D533E76E27E2A33B00AA9B52 /* CardListRow.swift */,
+				D503C53827DFA24500215801 /* IngredientListItem.swift */,
+				D51A60AC27E6279900EF777C /* SearchBar.swift */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
 		D533E76527E192E000AA9B52 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				D533E76627E1986A00AA9B52 /* Primary */,
 				D533E76727E198B500AA9B52 /* Add+Edit DB */,
-				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
+				D51A60AB27E6274500EF777C /* Templates */,
 				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
-				D51A60A927E4B88300EF777C /* RecipeRow.swift */,
-				D51A60A727E4B14200EF777C /* RecipeItem.swift */,
-				D533E76E27E2A33B00AA9B52 /* CardListRow.swift */,
-				D503C53827DFA24500215801 /* IngredientListItem.swift */,
+				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,7 +237,6 @@
 		D533E76627E1986A00AA9B52 /* Primary */ = {
 			isa = PBXGroup;
 			children = (
-				D503C52D27D7042400215801 /* ShoppingListView.swift */,
 				D533E76A27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift */,
 				D533E76C27E19A9900AA9B52 /* ShoppingListViewWithoutNavigation.swift */,
 				D533E76827E1997200AA9B52 /* PantryViewWithoutNavigation.swift */,
@@ -393,6 +401,7 @@
 				D503C53027D989AE00215801 /* ImagePicker.swift in Sources */,
 				D59446A427C30B7D00B27A80 /* AddIngredientView.swift in Sources */,
 				D5A0CE3727C96A8300CA1F7B /* Recipe_Ingredient_DB.swift in Sources */,
+				D51A60AD27E6279900EF777C /* SearchBar.swift in Sources */,
 				D503C53227DEB22D00215801 /* LocalFileManager.swift in Sources */,
 				D533E76927E1997200AA9B52 /* PantryViewWithoutNavigation.swift in Sources */,
 				D5A0CE3327C721E000CA1F7B /* Recipe.swift in Sources */,
@@ -404,7 +413,6 @@
 				D594469E27C2F97500B27A80 /* Ingredient.swift in Sources */,
 				D5A0CE3527C7238F00CA1F7B /* Recipe_DB.swift in Sources */,
 				D533E76427E12FA400AA9B52 /* Styles.swift in Sources */,
-				D503C52E27D7042400215801 /* ShoppingListView.swift in Sources */,
 				D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */,
 				D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */,
 				D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */,

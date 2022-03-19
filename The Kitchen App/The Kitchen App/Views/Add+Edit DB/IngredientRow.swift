@@ -46,7 +46,7 @@ struct IngredientRow: View {
                     .foregroundColor(.accentColor)
             }
         }
-        .padding(.top, 3)
+        //.padding(.top, 3)
         .padding(.bottom, 3)
         .contentShape(Rectangle())
         .onTapGesture {

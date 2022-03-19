@@ -10,6 +10,7 @@ import SwiftUI
 struct CardListRow: View {
     @Binding var item: Ingredient
     @State var inStock: Bool = false
+    @State var showingAlert: Bool = false
     
     var body: some View {
         ZStack {
