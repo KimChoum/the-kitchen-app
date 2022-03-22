@@ -30,11 +30,11 @@ struct PantryViewWithoutNavigation: View {
                 ForEach($ingredientSearchResults){ ingredientModel in
                     //print each ingredient
                     
-                    IngredientListItem(ingredient: ingredientModel)
+                    CardListRow(item: ingredientModel)
                         .listRowSeparator(.hidden)
                 }
             }
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onChange(of: searchText) { searchText in
 
                 if !searchText.isEmpty {
@@ -50,12 +50,17 @@ struct PantryViewWithoutNavigation: View {
                 self.ingredientSearchResults = Ingredient_DB().getIngredients()
             })
         }
+        .navigationTitle(Text("Ingredients"))
         .navigationBarItems(trailing:
                                 HStack{
                                     Spacer()
                                     //Add ingredient link
-            NavigationLink (destination: AddIngredientView(), label: { Text("Add Ingredient").foregroundColor(Color(.black))
-                                            .padding(.trailing, 8)
+            NavigationLink (destination: AddIngredientView(), label: {
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .accentColor(.blue)
+                    .padding(.trailing, 5)
                                     })}
                             )
     }

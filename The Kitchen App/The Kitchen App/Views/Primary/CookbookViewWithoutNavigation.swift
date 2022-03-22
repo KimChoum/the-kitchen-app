@@ -27,45 +27,39 @@ struct CookbookViewWithoutNavigation: View {
     
     var body: some View {
         VStack{
-            HStack{
-                //button to view all recipes
-                Text("Recipes")
-                .font(.title)
-                .foregroundColor(Color(.black))
-                
-                Spacer()
-                NavigationLink (destination: AddRecipeView(), label: { Text("Add Recipe")
-                        .foregroundColor(Color(.black))
-                }).padding(8)
-            }
-            .background(Color(.white))
-            
-            VStack{
-                
-                //List to show recipes:
-                List{
-                    ForEach(self.$recipeSearchResults) { (recipeModel) in
-                        RecipeRow(item: recipeModel)
-                            .listRowSeparator(.hidden)
-                    }
-                }
-                .listStyle(.plain)
-                .frame(height: 610)
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                .onChange(of: searchText) { searchText in
-                    if !searchText.isEmpty {
-                        recipeSearchResults = recipes.filter { $0.name.contains(searchText) }
-                    } else {
-                        recipeSearchResults = recipes
-                    }
+            //List to show recipes:
+            List{
+                ForEach(self.$recipeSearchResults) { (recipeModel) in
+                    RecipeRow(item: recipeModel)
+                        .listRowSeparator(.hidden)
                 }
             }
-            //load data to array
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .onChange(of: searchText) { searchText in
+                if !searchText.isEmpty {
+                    recipeSearchResults = recipes.filter { $0.name.contains(searchText) }
+                } else {
+                    recipeSearchResults = recipes
+                }
+            }
+            .listStyle(.plain)
             .onAppear(perform: {
                 self.recipes = Recipe_DB().getRecipes()
                 self.recipeSearchResults = recipes
             })
         }
+        .navigationTitle(Text("My Recipes"))
+        .navigationBarItems(trailing:
+                                HStack{
+            Spacer()
+            NavigationLink (destination: AddRecipeView(), label: {
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .accentColor(.blue)
+                    .padding(.trailing, 5)
+            })
+        })
     }
 }
 

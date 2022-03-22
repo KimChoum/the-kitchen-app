@@ -45,6 +45,7 @@ struct CardListRow: View {
 //            self.inStock = item.inStock
 //        })
     }
+    
 }
 
 struct CardListRow_Previews: PreviewProvider {
