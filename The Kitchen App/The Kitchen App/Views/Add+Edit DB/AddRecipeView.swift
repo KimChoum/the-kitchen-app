@@ -58,7 +58,7 @@ struct AddRecipeView: View {
                         }
                         .padding()
                 }
-                .padding(.top, 100)
+                .padding(.top, 70)
                 VStack(alignment: .leading){
                     //select a catagory
                     Picker("Meal Type", selection: $mealType) {
@@ -94,7 +94,7 @@ struct AddRecipeView: View {
                     IngredientMultipleSelectView(recipeName: $name, recipeInstructions: $instructions, recipeImage: $image, recipeMealType: $mealType, ingredients: self.ingredients)
                 }
                 .background(Color(.systemGray6))
-                .padding(.top, 150)
+                .padding(.top, 120)
                 }
             }
         }

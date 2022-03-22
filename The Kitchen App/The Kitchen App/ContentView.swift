@@ -68,15 +68,8 @@ struct ContentView: View {
     
     //variables for Ingredient list:
     @State var ingredients: [Ingredient] = []
-    @State var inStockNum: Int = 0
-    //variable to see if ingredient has been clicked on
-    @State var ingredientSelected: Bool = false
-    @State var selectedIngredientID: String = ""
     //variable to see if ingredients was selected
     @State var viewAllIngredientsSelected: Bool = false
-    
-    @State var inStock: Bool = false
-    
     //variable for searching ingredients
     @State private var searchText = ""
     @State var ingredientSearchResults: [Ingredient] = []
@@ -120,7 +113,7 @@ struct ContentView: View {
                             NavigationLink (destination: AddIngredientView(), label: {
                                 Image(systemName: "plus")
                                     .resizable()
-                                        .frame(width: 20, height: 20)
+                                    .frame(width: 20, height: 20)
                                     .accentColor(.blue)
                                     .padding(.trailing, 25)
                             })}
@@ -146,7 +139,6 @@ struct ContentView: View {
                             self.ingredientSearchResults = Ingredient_DB().getIngredients()
                         })
                     }
-                    //.frame(maxHeight: 220)
                     
                     
                     //Recipe Section
@@ -165,7 +157,7 @@ struct ContentView: View {
                             NavigationLink (destination: AddRecipeView(), label: {
                                 Image(systemName: "plus")
                                     .resizable()
-                                        .frame(width: 20, height: 20)
+                                    .frame(width: 20, height: 20)
                                     .accentColor(.blue)
                                     .padding(.trailing, 25)
                             }).padding(8)

@@ -20,28 +20,30 @@ struct CardListRow: View {
         }
         .fixedSize(horizontal: false, vertical: true)
         .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
-        .swipeActions() {
-            if self.inStock == true {
-                Button (action: {
-                    self.inStock = false
-                    item.inStock = self.inStock
-                    Ingredient_DB().updateIngredient(idValue: self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
-                }) {
-                    Text("Out of stock")
-                }
-                .tint(.yellow)
-            }else{
-                Button (action: {
-                    self.inStock = true
-                    item.inStock = self.inStock
-                    Ingredient_DB().updateIngredient(idValue: self.self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
-                }) {
-                    Text("In stock")
-                }
-                .tint(.green)
-            }
-        }
-        .onAppear(perform: {self.inStock = item.inStock})
+//        .swipeActions() {
+//            if self.inStock == true {
+//                Button (action: {
+//                    self.inStock = false
+//                    item.inStock = self.inStock
+//                    Ingredient_DB().updateIngredient(idValue: self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
+//                }) {
+//                    Text("Out of stock")
+//                }
+//                .tint(.yellow)
+//            }else{
+//                Button (action: {
+//                    self.inStock = true
+//                    item.inStock = self.inStock
+//                    Ingredient_DB().updateIngredient(idValue: self.self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
+//                }) {
+//                    Text("In stock")
+//                }
+//                .tint(.green)
+//            }
+//        }
+        .onAppear(perform: {
+            self.inStock = item.inStock
+        })
     }
 }
 
