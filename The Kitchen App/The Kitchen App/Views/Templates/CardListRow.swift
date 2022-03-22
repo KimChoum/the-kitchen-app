@@ -41,9 +41,9 @@ struct CardListRow: View {
 //                .tint(.green)
 //            }
 //        }
-        .onAppear(perform: {
-            self.inStock = item.inStock
-        })
+//        .onAppear(perform: {
+//            self.inStock = item.inStock
+//        })
     }
 }
 
