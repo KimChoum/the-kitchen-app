@@ -40,6 +40,7 @@
 		D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */; };
 		D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */; };
 		D5BCF12B27EA8BF8001125A5 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BCF12A27EA8BF8001125A5 /* NavigationModel.swift */; };
+		D5BCF12D27EAC2E2001125A5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BCF12C27EAC2E2001125A5 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIngredientView.swift; sourceTree = "<group>"; };
 		D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIngredientView.swift; sourceTree = "<group>"; };
 		D5BCF12A27EA8BF8001125A5 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		D5BCF12C27EAC2E2001125A5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 		D533E76627E1986A00AA9B52 /* Primary */ = {
 			isa = PBXGroup;
 			children = (
+				D5BCF12C27EAC2E2001125A5 /* HomeView.swift */,
 				D533E76A27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift */,
 				D533E76C27E19A9900AA9B52 /* ShoppingListViewWithoutNavigation.swift */,
 				D533E76827E1997200AA9B52 /* PantryViewWithoutNavigation.swift */,
@@ -397,6 +400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5BCF12D27EAC2E2001125A5 /* HomeView.swift in Sources */,
 				D51A60A827E4B14200EF777C /* RecipeItem.swift in Sources */,
 				D533E76F27E2A33B00AA9B52 /* CardListRow.swift in Sources */,
 				D51A60AA27E4B88300EF777C /* RecipeRow.swift in Sources */,

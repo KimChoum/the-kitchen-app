@@ -21,6 +21,7 @@ class Ingredient_DB{
     private var name: Expression<String>!
     private var inStock: Expression<Bool>!
     private var catagory: Expression<String>!
+    private var keepInStock: Expression<Bool>!
     
     init(){
         
@@ -40,6 +41,7 @@ class Ingredient_DB{
             name = Expression<String>("name")
             inStock = Expression<Bool>("inStock")
             catagory = Expression<String>("catagory")
+            keepInStock = Expression<Bool>("keepInStock")
             //id = Expression<Int64>("id")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_ingredient_db_created")){
@@ -49,6 +51,7 @@ class Ingredient_DB{
                     t.column(name)
                     t.column(inStock)
                     t.column(catagory)
+                    t.column(keepInStock)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_ingredient_db_created")
@@ -59,10 +62,10 @@ class Ingredient_DB{
 
     }
     
-    public func addIngredient(idValue: String, nameValue: String, inStockValue: Bool, catagoryValue: String){
+    public func addIngredient(idValue: String, nameValue: String, inStockValue: Bool, catagoryValue: String, keepInStockValue: Bool){
         
         do{
-            try db.run(ingredients.insert(id <- idValue, name <- nameValue, inStock <- inStockValue, catagory <- catagoryValue))
+            try db.run(ingredients.insert(id <- idValue, name <- nameValue, inStock <- inStockValue, catagory <- catagoryValue, keepInStock <- keepInStockValue))
         } catch{
             print(error.localizedDescription)
         }
@@ -90,6 +93,7 @@ class Ingredient_DB{
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
                 ingredientReturn.catagory = ingredient[catagory]
+                ingredientReturn.keepInStock = ingredient[keepInStock]
                 //append object to array
                 ingredientsList.append(ingredientReturn)
             }
@@ -167,6 +171,7 @@ class Ingredient_DB{
                 ingredientReturn.name = ingredient[name]
                 ingredientReturn.inStock = ingredient[inStock]
                 ingredientReturn.catagory = ingredient[catagory]
+                ingredientReturn.keepInStock = ingredient[keepInStock]
             }
         }catch{
             print(error.localizedDescription)
@@ -175,16 +180,16 @@ class Ingredient_DB{
     }
     
     //function to update Ingredient
-    public func updateIngredient(idValue: String, nameValue: String, inStockValue: Bool){
+    public func updateIngredient(idValue: String, nameValue: String, inStockValue: Bool, categoryValue: String, keepInStockValue: Bool){
         do{
+            print(keepInStockValue)
             //get ingredient
             let ingredient: Table = ingredients.filter(id == idValue)
             
-            try db.run(ingredient.update(inStock <- inStockValue, name <- nameValue))
+            try db.run(ingredient.update(inStock <- inStockValue, name <- nameValue, catagory <- categoryValue, keepInStock <- keepInStockValue))
         }catch{
             print(error.localizedDescription)
         }
-        print(inStockValue)
     }
     
     //function to get a shopping list
@@ -199,8 +204,22 @@ class Ingredient_DB{
                         tempIngredient.name = ingredient[name]
                         tempIngredient.inStock = ingredient[inStock]
                         tempIngredient.id = UUID(uuidString: ingredient[id])!
+                        tempIngredient.catagory = ingredient[catagory]
+                        tempIngredient.keepInStock = ingredient[keepInStock]
                         shoppingList.append(tempIngredient)
                     }
+                }
+            }
+            for ingredient in try db.prepare(ingredients.where(keepInStock && !inStock)){
+                let tempIngredient: Ingredient = Ingredient()
+                //set recipe object values
+                if(ingredient[inStock] == false){
+                    tempIngredient.name = ingredient[name]
+                    tempIngredient.inStock = ingredient[inStock]
+                    tempIngredient.id = UUID(uuidString: ingredient[id])!
+                    tempIngredient.catagory = ingredient[catagory]
+                    tempIngredient.keepInStock = ingredient[keepInStock]
+                    shoppingList.append(tempIngredient)
                 }
             }
         }catch{

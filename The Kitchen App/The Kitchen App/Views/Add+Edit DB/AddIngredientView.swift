@@ -9,12 +9,13 @@ import SwiftUI
 
 struct AddIngredientView: View {
     
-    let catagories = ["None", "Produce", "Dairy/Eggs", "Butcher", "Bakery", "Canned Goods", "Baking", "Frozen", "Bulk", "Snack Foods", "Spices/Seasonings", "Pasta/Rice", "Drinks", "Liquor", "Condiments"]
+    let catagories = ["None", "Produce", "Dairy/Eggs", "Meat", "Bakery", "Canned Goods", "Baking", "Frozen", "Bulk", "Snack Foods", "Spices/Seasonings", "Pasta/Rice", "Drinks", "Liquor", "Condiments"]
     //vars to hold user input:
     @State var name: String = ""
     @State var inStock: Bool = false
     @State var id: String = UUID().uuidString
     @State var catagorySelected: String = "None"
+    @State var keepInStock: Bool = false
     
     //go back to homescreen after ingredient is added
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -31,10 +32,18 @@ struct AddIngredientView: View {
                 HStack{
                     //create entry to enable in stock
                     Toggle(isOn: $inStock,label: {
-                        Text("In Stock")
+                        Text("In stock")
                     })
                     .toggleStyle(CheckboxStyle())
                     .padding()
+                    
+                    //create entry to get keepInStock
+                    Toggle(isOn: $keepInStock,label: {
+                        Text("Always in stock")
+                    })
+                    .toggleStyle(CheckboxStyle())
+                    .padding()
+                }
                     //select a catagory
                 Picker(selection: $catagorySelected, label: Text("Category")) {
                         ForEach(catagories, id: \.self) {
@@ -43,13 +52,11 @@ struct AddIngredientView: View {
                     }
                     .pickerStyle(.automatic)
                     
-                    Spacer()
-                }
                 
                 //button to create new row in db
                 Button(action: {
                     //call function to add new row in sqlite
-                    Ingredient_DB().addIngredient(idValue: self.id, nameValue: self.name, inStockValue: self.inStock, catagoryValue: self.catagorySelected)
+                    Ingredient_DB().addIngredient(idValue: self.id, nameValue: self.name, inStockValue: self.inStock, catagoryValue: self.catagorySelected, keepInStockValue: true)
                     //go back to homepage
                     self.mode.wrappedValue.dismiss()
                 }, label: {

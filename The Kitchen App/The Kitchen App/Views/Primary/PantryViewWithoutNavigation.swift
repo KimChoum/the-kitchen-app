@@ -49,10 +49,9 @@ struct PantryViewWithoutNavigation: View {
             .onAppear(perform: {
                 print("Load ingredients from DB")
                 self.ingredients = Ingredient_DB().getIngredients()
-                self.ingredientSearchResults = Ingredient_DB().getIngredients()
+                self.ingredientSearchResults = ingredients
             })
         }
-        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button(action: {

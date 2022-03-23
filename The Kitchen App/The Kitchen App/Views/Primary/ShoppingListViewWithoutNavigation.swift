@@ -36,18 +36,7 @@ struct ShoppingListViewWithoutNavigation: View {
         }
         ScrollView{
             
-            if(recipesToMake.isEmpty){
-                Text("\n\nShopping list is empty\n\n")
-                    .font(.title)
-                    .foregroundColor(.red)
-                Text("Add ingredients to shopping list")
-                    .font(.body)
-                Text("or")
-                Text("select recipes to add ingredients to list automatically")
-                    .font(.body)
-                    .multilineTextAlignment(.center)
-            }
-            else if(ingredientsToBuy.isEmpty){
+            if(ingredientsToBuy.isEmpty){
                 VStack{
                     Text("\n\n\n\nAll ingredients for selected recipes are in stock!")
                         .font(.title)
@@ -64,18 +53,19 @@ struct ShoppingListViewWithoutNavigation: View {
                         self.showingAlert = true
                     }, label: {
                         Text(ingredientModel.name)
+                            .padding(.leading, 10)
                             .frame(maxWidth: 350, minHeight: 35, alignment: .leading)
                             .foregroundColor(Color(.black))
-                            .background(Color(ingredientModel.inStock ? .green : .red))
                             .clipShape(RoundedRectangle(cornerRadius: 7))
                             .shadow(radius: 2)
-                        //.border(Color(labelColor))
+                            .border(Color(.black))
                     })
                         .alert("Add \(self.selectedIngredientName) to your pantry", isPresented: $showingAlert) {
                             Button("Cencel") { }
                             Button("Yes") {
                                 //call DB to update user with new values
-                                Ingredient_DB().updateIngredient(idValue: ingredientModel.id.uuidString, nameValue: ingredientModel.name, inStockValue: true)
+                                print(ingredientModel.keepInStock)
+                                Ingredient_DB().updateIngredient(idValue: ingredientModel.id.uuidString, nameValue: ingredientModel.name, inStockValue: true, categoryValue: ingredientModel.catagory, keepInStockValue: ingredientModel.keepInStock)
                                 
                                 self.ingredientsToBuy = Ingredient_DB().getShoppingList(allIngredientIDs: Recipe_Ingredient_DB().getAllIngredientIDsNeeded(recipesList: recipesToMake))
                             }

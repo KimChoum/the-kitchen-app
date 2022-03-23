@@ -30,13 +30,18 @@ struct ViewIngredientView: View {
             Toggle("", isOn: $inStock)
                 .frame(width: 1, alignment: .center)
                 .onChange(of: inStock, perform: { value in
-                //call DB to update user with new values
-                    ingredient.inStock = inStock
-                    Ingredient_DB().updateIngredient(idValue: self.ingredient.id.uuidString, nameValue: ingredient.name, inStockValue: ingredient.inStock)
-            })
+                    //call DB to update user with new values
+                    ingredient.inStock = self.inStock
+                    Ingredient_DB().updateIngredient(idValue: self.ingredient.id.uuidString, nameValue: ingredient.name, inStockValue: ingredient.inStock, categoryValue: ingredient.catagory, keepInStockValue: ingredient.keepInStock)
+                })
+            if ingredient.keepInStock{
+                HStack{
+                    Text("Always keep in stock:")
+                    Image(systemName: "checkmark")
+                }}
         }
         .onAppear(perform: {
-            inStock = ingredient.inStock
+            self.inStock = ingredient.inStock
         })
         .navigationBarItems(trailing:
                                 HStack{
@@ -51,6 +56,7 @@ struct ViewIngredientView: View {
                     title: Text("Are you sure you want to delete this?"),
                     message: Text("There is no undo"),
                     primaryButton: .destructive(Text("Delete")) {
+                        ingredient.name = "Deleted"
                         //Remove recipe from Recipe_DB
                         Ingredient_DB().deleteIngredient(ingredientID: ingredient.id.uuidString)
                         //Remove recipe from Recipe_Igredient_DB
@@ -61,7 +67,7 @@ struct ViewIngredientView: View {
                     secondaryButton: .cancel()
                 )
             }
-                Spacer()
+            Spacer()
             NavigationLink(destination: EditIngredientView(ingredient: $ingredient), label: {Text("Edit")})
         })
     }

@@ -21,4 +21,5 @@ class Ingredient: Identifiable, Hashable{
     public var name: String = ""
     public var inStock: Bool = false
     public var catagory: String = ""
+    public var keepInStock: Bool = false
 }

@@ -25,7 +25,7 @@ struct CardListRow: View {
 //                Button (action: {
 //                    self.inStock = false
 //                    item.inStock = self.inStock
-//                    Ingredient_DB().updateIngredient(idValue: self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
+//                    Ingredient_DB().updateIngredient(idValue: self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock, categoryValue: self.item.catagory, keepInStockValue: self.item.keepInStock)
 //                }) {
 //                    Text("Out of stock")
 //                }
@@ -34,7 +34,7 @@ struct CardListRow: View {
 //                Button (action: {
 //                    self.inStock = true
 //                    item.inStock = self.inStock
-//                    Ingredient_DB().updateIngredient(idValue: self.self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock)
+//                    Ingredient_DB().updateIngredient(idValue: self.self.item.id.uuidString, nameValue: self.item.name, inStockValue: self.item.inStock, categoryValue: self.item.catagory, keepInStockValue: self.item.keepInStock)
 //                }) {
 //                    Text("In stock")
 //                }

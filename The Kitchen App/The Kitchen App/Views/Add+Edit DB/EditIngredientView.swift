@@ -14,6 +14,8 @@ struct EditIngredientView: View {
     //variables to store values for input fields
     @State var name: String = ""
     @State var inStock: Bool = false
+    @State var category: String = ""
+    @State var keepInStock: Bool = false
     
     //ingredient is deleted
     @State var ingredientButtonPressed: Bool = false
@@ -43,7 +45,7 @@ struct EditIngredientView: View {
             //button to update db
             Button(action: {
                 //call DB to update user with new values
-                Ingredient_DB().updateIngredient(idValue: self.ingredient.id.uuidString, nameValue: self.name, inStockValue: self.inStock)
+                Ingredient_DB().updateIngredient(idValue: self.ingredient.id.uuidString, nameValue: self.name, inStockValue: self.inStock, categoryValue: self.category, keepInStockValue: self.keepInStock)
                 //Update ingredient object
                 ingredient.name = self.name
                 ingredient.inStock = self.inStock
