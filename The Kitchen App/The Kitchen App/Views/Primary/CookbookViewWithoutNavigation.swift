@@ -25,6 +25,9 @@ struct CookbookViewWithoutNavigation: View {
     @State var searchText: String = ""
     @State var recipeSearchResults: [Recipe] = []
     
+    //for navigation:
+    @Binding var shouldPopToRootView : Bool
+    
     var body: some View {
         VStack{
             //List to show recipes:
@@ -48,6 +51,68 @@ struct CookbookViewWithoutNavigation: View {
                 self.recipeSearchResults = recipes
             })
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button(action: {
+                    print("Online recipes")
+                }, label: {
+                    Image(systemName: "globe.americas")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .accentColor(.black)
+                })
+                
+                Spacer()
+                
+                NavigationLink (destination: ShoppingListViewWithoutNavigation(shouldPopToRootView: self.$shouldPopToRootView), label: {
+                    ZStack(alignment: .topTrailing){
+                        Image(systemName: "cart")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .accentColor(.black)
+                        Image(systemName: "checklist")
+                            .resizable()
+                            .frame(width: 12, height: 12)
+                            .accentColor(.black)
+                            .background(Color(.white))
+                    }
+                })
+                .isDetailLink(false)
+                
+                Spacer()
+                
+                Button (action: { self.shouldPopToRootView = false }, label:
+                                    {
+                        Image(systemName: "house.circle.fill")
+                            .resizable()
+                            .frame(width: 70, height: 70)
+                            .accentColor(.black)
+                    })
+                
+                Spacer()
+                
+                Button (action: {print("Do nothing, already at cookbook")}, label:
+                                    {
+                        Image(systemName: "menucard")
+                            .resizable()
+                            .frame(width: 20, height: 30)
+                            .accentColor(.black)
+                    })
+                
+                Spacer()
+                
+                NavigationLink (destination: PantryViewWithoutNavigation(shouldPopToRootView: self.$shouldPopToRootView), label:
+                                    {
+                        Image(systemName: "fork.knife")
+                            .resizable()
+                            .frame(width: 20, height: 30)
+                            .accentColor(.black)
+                    })
+                .isDetailLink(false)
+                Spacer()
+            }
+        }
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(Text("My Recipes"))
         .navigationBarItems(trailing:
                                 HStack{
@@ -63,9 +128,9 @@ struct CookbookViewWithoutNavigation: View {
     }
 }
 
-struct CookbookViewWithoutNavigation_Previews: PreviewProvider {
-    static var previews: some View {
-        CookbookViewWithoutNavigation()
-    }
-}
+//struct CookbookViewWithoutNavigation_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CookbookViewWithoutNavigation()
+//    }
+//}
 

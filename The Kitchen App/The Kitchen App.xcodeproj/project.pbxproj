@@ -39,6 +39,7 @@
 		D5A0CE4627CE88ED00CA1F7B /* Drawer in Frameworks */ = {isa = PBXBuildFile; productRef = D5A0CE4527CE88ED00CA1F7B /* Drawer */; };
 		D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */; };
 		D5A0CE4A27CEFFB000CA1F7B /* EditIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */; };
+		D5BCF12B27EA8BF8001125A5 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BCF12A27EA8BF8001125A5 /* NavigationModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		D5A0CE4227C9B6F900CA1F7B /* IngredientRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientRow.swift; sourceTree = "<group>"; };
 		D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIngredientView.swift; sourceTree = "<group>"; };
 		D5A0CE4927CEFFB000CA1F7B /* EditIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIngredientView.swift; sourceTree = "<group>"; };
+		D5BCF12A27EA8BF8001125A5 /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				D594469D27C2F97400B27A80 /* Ingredient.swift */,
+				D5BCF12A27EA8BF8001125A5 /* NavigationModel.swift */,
 				D5A0CE3227C721DF00CA1F7B /* Recipe.swift */,
 			);
 			path = Models;
@@ -417,6 +420,7 @@
 				D5A0CE4327C9B6F900CA1F7B /* IngredientRow.swift in Sources */,
 				D5A0CE4827CEF7B300CA1F7B /* ViewIngredientView.swift in Sources */,
 				D533E76D27E19A9900AA9B52 /* ShoppingListViewWithoutNavigation.swift in Sources */,
+				D5BCF12B27EA8BF8001125A5 /* NavigationModel.swift in Sources */,
 				D503C53927DFA24500215801 /* IngredientListItem.swift in Sources */,
 				D533E76B27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift in Sources */,
 			);

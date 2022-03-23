@@ -57,7 +57,6 @@ struct RecipeItem: View {
                     .stroke(Color(.sRGB, red: 150/255, green: 150/255, blue: 150/255, opacity: 0.1), lineWidth: 1)
             )
             .shadow(radius: 10)
-            //.padding([.top, .horizontal])
         })
     }
 }

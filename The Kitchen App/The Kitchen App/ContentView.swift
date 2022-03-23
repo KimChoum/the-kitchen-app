@@ -90,6 +90,11 @@ struct ContentView: View {
     //for search
     @State var recipeSearchResults: [Recipe] = []
     
+    //for navigation
+    @State var shoppingListViewIsActive : Bool = false
+    @State var cookbookViewIsActive : Bool = false
+    @State var pantryViewIsActive : Bool = false
+    
     
     
     var body: some View {
@@ -100,9 +105,9 @@ struct ContentView: View {
                     VStack{
                         HStack{
                             //navigation link to view recipes in full page view
-                            NavigationLink (destination: PantryViewWithoutNavigation(), isActive: self.$viewAllIngredientsSelected){
-                                EmptyView()
-                            }
+//                            NavigationLink (destination: PantryViewWithoutNavigation(), isActive: self.$viewAllIngredientsSelected){
+//                                EmptyView()
+//                            }
                             //button to view all recipes
                             Button(action: {self.viewAllIngredientsSelected = true}, label: {
                                 Text("Ingredients").font(.title).foregroundColor(Color(labelColor))
@@ -145,9 +150,9 @@ struct ContentView: View {
                     VStack{
                         HStack{
                             //navigation link to view recipes in full page view
-                            NavigationLink (destination: CookbookViewWithoutNavigation(), isActive: self.$viewAllRecipesSelected){
-                                EmptyView()
-                            }
+//                            NavigationLink (destination: CookbookViewWithoutNavigation(), isActive: self.$viewAllRecipesSelected){
+//                                EmptyView()
+//                            }
                             //button to view all recipes
                             Button(action: {self.viewAllRecipesSelected = true}, label: {
                                 Text("Recipes").font(.title).foregroundColor(Color(labelColor))
@@ -189,16 +194,78 @@ struct ContentView: View {
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
                 .navigationBarTitle(Text("My Kitchen"))
             }
-            .navigationBarItems(trailing:
-                                    HStack{
-                Spacer()
-                //Shopping List button
-                NavigationLink(destination: ShoppingListViewWithoutNavigation(), label: {
-                    //Text("Shopping list")
-                    Image(systemName: "checklist")
-                })
+            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(action: {
+                        print("Online recipes")
+                    }, label: {
+                        Image(systemName: "globe.americas")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .accentColor(.black)
+                    })
+                    
+                    Spacer()
+                    
+                    NavigationLink (
+                        destination: ShoppingListViewWithoutNavigation(shouldPopToRootView: self.$shoppingListViewIsActive),
+                        isActive: self.$shoppingListViewIsActive,
+                        label: {
+                        ZStack(alignment: .topTrailing){
+                            Image(systemName: "cart")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .accentColor(.black)
+                            Image(systemName: "checklist")
+                                .resizable()
+                                .frame(width: 12, height: 12)
+                                .accentColor(.black)
+                                .background(Color(.white))
+                        }
+                    })
+                    .isDetailLink(false)
+                    
+                    Spacer()
+                    
+                    Button (action: {print("Do nothing, already home")}, label:
+                                        {
+                            Image(systemName: "house.circle.fill")
+                                .resizable()
+                                .frame(width: 70, height: 70)
+                                .accentColor(.black)
+                        })
+                    
+                    Spacer()
+                    
+                    NavigationLink (destination: CookbookViewWithoutNavigation(shouldPopToRootView: self.$cookbookViewIsActive),
+                                    isActive: self.$cookbookViewIsActive,
+                                    label:
+                                        {
+                            Image(systemName: "menucard")
+                                .resizable()
+                                .frame(width: 20, height: 30)
+                                .accentColor(.black)
+                        })
+                    .isDetailLink(false)
+                    
+                    Spacer()
+                    
+                    NavigationLink (destination: PantryViewWithoutNavigation(shouldPopToRootView: self.$pantryViewIsActive),
+                                    isActive: self.$pantryViewIsActive,
+                                    label:
+                                        {
+                            Image(systemName: "fork.knife")
+                                .resizable()
+                                .frame(width: 20, height: 30)
+                                .accentColor(.black)
+                        })
+                    .isDetailLink(false)
+                    
+                    Spacer()
+                }
             }
-            )
         }
     }
 }
