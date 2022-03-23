@@ -136,6 +136,7 @@ class Ingredient_DB{
                 ingredientReturn.name = ingredientItem[name]
                 ingredientReturn.inStock = ingredientItem[inStock]
                 ingredientReturn.catagory = ingredientItem[catagory]
+                ingredientReturn.keepInStock = ingredientItem[keepInStock]
                 //append object to array
                 ingredientsListReturn.append(ingredientReturn)
             }
@@ -194,7 +195,7 @@ class Ingredient_DB{
     
     //function to get a shopping list
     public func getShoppingList(allIngredientIDs: Set<String>) -> [Ingredient]{
-        var shoppingList: [Ingredient] = []
+        var shoppingList: Set<Ingredient> = []
         do{
             for idValue in allIngredientIDs {
                 for ingredient in try db.prepare(ingredients.where(id == idValue)){
@@ -206,7 +207,7 @@ class Ingredient_DB{
                         tempIngredient.id = UUID(uuidString: ingredient[id])!
                         tempIngredient.catagory = ingredient[catagory]
                         tempIngredient.keepInStock = ingredient[keepInStock]
-                        shoppingList.append(tempIngredient)
+                        shoppingList.insert(tempIngredient)
                     }
                 }
             }
@@ -219,13 +220,13 @@ class Ingredient_DB{
                     tempIngredient.id = UUID(uuidString: ingredient[id])!
                     tempIngredient.catagory = ingredient[catagory]
                     tempIngredient.keepInStock = ingredient[keepInStock]
-                    shoppingList.append(tempIngredient)
+                    shoppingList.insert(tempIngredient)
                 }
             }
         }catch{
             print(error.localizedDescription)
         }
-        return shoppingList
+        return Array(shoppingList)
     }
     
 }

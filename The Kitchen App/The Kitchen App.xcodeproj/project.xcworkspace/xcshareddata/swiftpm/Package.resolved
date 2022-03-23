@@ -1,25 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "SQLite.swift",
-        "repositoryURL": "https://github.com/stephencelis/SQLite.swift.git",
-        "state": {
-          "branch": null,
-          "revision": "5f5ad81ac0d0a0f3e56e39e646e8423c617df523",
-          "version": "0.13.2"
-        }
-      },
-      {
-        "package": "Drawer",
-        "repositoryURL": "https://github.com/maustinstar/swiftui-drawer",
-        "state": {
-          "branch": "master",
-          "revision": "6d22f5c1362bfa71f2915c28aebba343b9243363",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "5f5ad81ac0d0a0f3e56e39e646e8423c617df523",
+        "version" : "0.13.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swiftui-drawer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maustinstar/swiftui-drawer",
+      "state" : {
+        "branch" : "master",
+        "revision" : "6d22f5c1362bfa71f2915c28aebba343b9243363"
+      }
+    }
+  ],
+  "version" : 2
 }

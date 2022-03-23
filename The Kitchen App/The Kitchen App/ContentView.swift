@@ -100,7 +100,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             ScrollView{
-                VStack{
+                VStack(alignment: .leading){
+                    Text("My Kitchen")
+                        .font(.system(size: 40, weight: .bold, design: .default))
+                        .padding()
                     //Ingredient Section
                     VStack{
                         HStack{
@@ -192,7 +195,6 @@ struct ContentView: View {
                     }
                 }
                 .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-                .navigationBarTitle(Text("My Kitchen"))
             }
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)

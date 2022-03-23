@@ -112,8 +112,7 @@ struct PantryViewWithoutNavigation: View {
                 Spacer()
             }
         }
-
-        
+        .navigationBarBackButtonHidden(true)
         .navigationTitle(Text("Ingredients"))
         .navigationBarItems(trailing:
                                 HStack{

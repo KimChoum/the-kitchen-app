@@ -56,7 +56,7 @@ struct AddIngredientView: View {
                 //button to create new row in db
                 Button(action: {
                     //call function to add new row in sqlite
-                    Ingredient_DB().addIngredient(idValue: self.id, nameValue: self.name, inStockValue: self.inStock, catagoryValue: self.catagorySelected, keepInStockValue: true)
+                    Ingredient_DB().addIngredient(idValue: self.id, nameValue: self.name, inStockValue: self.inStock, catagoryValue: self.catagorySelected, keepInStockValue: self.keepInStock)
                     //go back to homepage
                     self.mode.wrappedValue.dismiss()
                 }, label: {

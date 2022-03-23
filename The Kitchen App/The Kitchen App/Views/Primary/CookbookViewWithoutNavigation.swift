@@ -30,6 +30,19 @@ struct CookbookViewWithoutNavigation: View {
     
     var body: some View {
         VStack{
+            HStack{
+                Text("Recipes")
+                    .font(.system(size: 40, weight: .bold, design: .default))
+                    .padding()
+                Spacer()
+                NavigationLink (destination: AddRecipeView(), label: {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .accentColor(.blue)
+                        .padding()
+                })
+            }
             //List to show recipes:
             List{
                 ForEach(self.$recipeSearchResults) { (recipeModel) in
@@ -82,49 +95,38 @@ struct CookbookViewWithoutNavigation: View {
                 Spacer()
                 
                 Button (action: { self.shouldPopToRootView = false }, label:
-                                    {
-                        Image(systemName: "house.circle.fill")
-                            .resizable()
-                            .frame(width: 70, height: 70)
-                            .accentColor(.black)
-                    })
+                            {
+                    Image(systemName: "house.circle.fill")
+                        .resizable()
+                        .frame(width: 70, height: 70)
+                        .accentColor(.black)
+                })
                 
                 Spacer()
                 
                 Button (action: {print("Do nothing, already at cookbook")}, label:
-                                    {
-                        Image(systemName: "menucard")
-                            .resizable()
-                            .frame(width: 20, height: 30)
-                            .accentColor(.black)
-                    })
+                            {
+                    Image(systemName: "menucard")
+                        .resizable()
+                        .frame(width: 20, height: 30)
+                        .accentColor(.black)
+                })
                 
                 Spacer()
                 
                 NavigationLink (destination: PantryViewWithoutNavigation(shouldPopToRootView: self.$shouldPopToRootView), label:
                                     {
-                        Image(systemName: "fork.knife")
-                            .resizable()
-                            .frame(width: 20, height: 30)
-                            .accentColor(.black)
-                    })
+                    Image(systemName: "fork.knife")
+                        .resizable()
+                        .frame(width: 20, height: 30)
+                        .accentColor(.black)
+                })
                 .isDetailLink(false)
                 Spacer()
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(Text("My Recipes"))
-        .navigationBarItems(trailing:
-                                HStack{
-            Spacer()
-            NavigationLink (destination: AddRecipeView(), label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .accentColor(.blue)
-                    .padding(.trailing, 5)
-            })
-        })
+        .navigationBarHidden(true)
     }
 }
 
