@@ -7,6 +7,35 @@
 
 import SwiftUI
 
+struct CheckboxToggleStyle: ToggleStyle {
+  let style: Style // custom param
+
+  func makeBody(configuration: Configuration) -> some View {
+    Button(action: {
+      configuration.isOn.toggle() // toggle the state binding
+    }, label: {
+      HStack {
+        Image(systemName: configuration.isOn ? "checkmark.\(style.sfSymbolName).fill" : style.sfSymbolName)
+          .imageScale(.large)
+        configuration.label
+      }
+    }).buttonStyle(PlainButtonStyle()) // remove any implicit styling from the button
+  }
+
+  enum Style {
+    case square, circle
+
+    var sfSymbolName: String {
+      switch self {
+      case .square:
+        return "square"
+      case .circle:
+        return "circle"
+      }
+    }
+  }
+}
+
 struct viewRecipeView: View {
     //Name of recipe recived from revious view
     @Binding var recipe: Recipe
@@ -33,25 +62,37 @@ struct viewRecipeView: View {
                 .frame(maxHeight: 250)
                 .ignoresSafeArea()
             HStack{
-                Text(recipe.name)
-                    .background(Color(.white))
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                    .padding(.top, 73)
-                    .padding(.leading, 5)
-                    .font(.title)
+                VStack(alignment: .leading){
+                    Text(recipe.name)
+                        .font(.title)
+                        .padding(.leading, 10)
+                        .padding(.trailing, 10)
+                    if (Ingredient_DB().allInStock(allIngredientIDs: Recipe_Ingredient_DB().getIngredientIDsList(recipeIDValue: recipe.id.uuidString))){
+                        HStack{
+                            Text("All ingredient in stock!")
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.green)
+                        }
+                    }
+                }
+                .background(Color(.white))
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+                .padding(.top, 73)
+                .padding(.leading, 5)
                 Spacer()
             }
             ScrollView{
                 VStack(alignment: .leading) {
                     HStack{
-                        Text("On shopping list")
-                            .padding()
-                        Toggle("", isOn: $onShoppingList)
+                        Toggle("On shopping list", isOn: $onShoppingList)
                             .onChange(of: onShoppingList, perform: { value in
                                 //call DB to update user with new values
                                 recipe.onShoppingList = self.onShoppingList
                                 Recipe_DB().updateOnShoppingList(recipeIDValue: recipe.id.uuidString, onShoppingListValue: recipe.onShoppingList)
                             })
+                            .toggleStyle(CheckboxToggleStyle(style: .circle))
+                            .padding()
+                        Spacer()
                     }
                     Text("Instructions:")
                         .font(.title)
@@ -70,7 +111,7 @@ struct viewRecipeView: View {
                                 .listRowSeparator(.hidden)
                         }
                     }
-                    .frame(height: 180)
+                    .frame(minHeight: 300)
                     .listStyle(.plain)
                 }
                 .background(Color(.white))
