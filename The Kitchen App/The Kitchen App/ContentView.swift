@@ -89,13 +89,12 @@ struct ContentView: View {
     @State var viewAllRecipesSelected: Bool = false
     //for search
     @State var recipeSearchResults: [Recipe] = []
+    @State var isEditing: Bool = false
     
     //for navigation
     @State var shoppingListViewIsActive : Bool = false
     @State var cookbookViewIsActive : Bool = false
     @State var pantryViewIsActive : Bool = false
-    
-    
     
     var body: some View {
         NavigationView{
@@ -104,6 +103,41 @@ struct ContentView: View {
                     Text("My Kitchen")
                         .font(.system(size: 40, weight: .bold, design: .default))
                         .padding()
+                    //search bar
+                    HStack {
+                        TextField("Search...", text: $searchText)
+                            .padding(7)
+                            .padding(.horizontal, 25)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                            .onChange(of: searchText) { searchText in
+                                if !searchText.isEmpty {
+                                    ingredientSearchResults = ingredients.filter { $0.name.contains(searchText) }
+                                } else {
+                                    ingredientSearchResults = ingredients
+                                }
+                            }
+                            .overlay(HStack { // Add the search icon to the left
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.gray)
+                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 8)
+
+                                // If the search field is focused, add the clear (X) button
+                                if isEditing {
+                                    Button(action: {
+                                        self.searchText = ""
+                                    }) {
+                                        Image(systemName: "multiply.circle.fill")
+                                            .foregroundColor(.gray)
+                                            .padding(.trailing, 8)
+                                    }
+                                }
+                            }).padding(.horizontal, 10)
+                            .onTapGesture {
+                                self.isEditing = true
+                            }
+                    }
                     //Ingredient Section
                     VStack{
                         HStack{
@@ -194,7 +228,6 @@ struct ContentView: View {
                         })
                     }
                 }
-                .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             }
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)

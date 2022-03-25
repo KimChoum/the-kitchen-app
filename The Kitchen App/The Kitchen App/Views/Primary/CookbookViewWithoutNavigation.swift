@@ -22,8 +22,12 @@ struct CookbookViewWithoutNavigation: View {
     @State var selectedRecipeID: String = ""
     //if view all is selected
     @State var viewAllRecipesSelected: Bool = false
+    //for searching
     @State var searchText: String = ""
     @State var recipeSearchResults: [Recipe] = []
+    @State var isEditing: Bool = false
+    //sorting:
+    @State var selectedSort: String = "alphabetical"
     
     //for navigation:
     @Binding var shouldPopToRootView : Bool
@@ -43,6 +47,101 @@ struct CookbookViewWithoutNavigation: View {
                         .padding()
                 })
             }
+            //search bar
+            HStack {
+                TextField("Search...", text: $searchText)
+                    .padding(7)
+                    .padding(.horizontal, 25)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .onChange(of: searchText) { searchText in
+                        if !searchText.isEmpty {
+                            recipeSearchResults = recipes.filter { $0.name.contains(searchText) }
+                        } else {
+                            recipeSearchResults = recipes
+                        }
+                    }
+                    .overlay(HStack { // Add the search icon to the left
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 8)
+
+                        // If the search field is focused, add the clear (X) button
+                        if isEditing {
+                            Button(action: {
+                                self.searchText = ""
+                            }) {
+                                Image(systemName: "multiply.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8)
+                            }
+                        }
+                    }).padding(.horizontal, 10)
+                    .onTapGesture {
+                        self.isEditing = true
+                    }
+            }
+            //sorting
+            ScrollView(.horizontal, showsIndicators: false){
+                HStack{
+                    Text("Alphabetical")
+                        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                        .background(Color(self.selectedSort == "alphabetical" ? .systemGray2 : .systemGray6))
+                        .cornerRadius(15)
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            self.selectedSort = "alphabetical"
+                            recipeSearchResults = recipes
+                        }
+                        .padding(.leading, 5)
+                    Text("Can Make Now")
+                        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                        .background(Color(self.selectedSort == "in stock" ? .systemGray2 : .systemGray6))
+                        .cornerRadius(15)
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            self.selectedSort = "in stock"
+                            recipeSearchResults = []
+                            for recipeModel in recipes {
+                                if (Ingredient_DB().allInStock(allIngredientIDs: Recipe_Ingredient_DB().getIngredientIDsList(recipeIDValue: recipeModel.id.uuidString))){
+                                    recipeSearchResults.append(recipeModel)
+                                }
+                            }
+                        }
+                    Text("On Shopping List")
+                        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                        .background(Color(self.selectedSort == "On Shopping List" ? .systemGray2 : .systemGray6))
+                        .cornerRadius(15)
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            self.selectedSort = "On Shopping List"
+                            recipeSearchResults = []
+                            for recipeModel in recipes {
+                                if (recipeModel.onShoppingList){
+                                    recipeSearchResults.append(recipeModel)
+                                }
+                            }
+                        }
+                    Text("Few More Items")
+                        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                        .background(Color(self.selectedSort == "Few More Items" ? .systemGray2 : .systemGray6))
+                        .cornerRadius(15)
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            self.selectedSort = "Few More Items"
+                            recipeSearchResults = []
+                            for recipeModel in recipes {
+                                if (Ingredient_DB().threeOrLess(allIngredientIDs: Recipe_Ingredient_DB().getIngredientIDsList(recipeIDValue: recipeModel.id.uuidString))){
+                                    recipeSearchResults.append(recipeModel)
+                                }
+                            }
+                        }
+                }
+                .onDisappear(perform: {
+                    self.selectedSort = "alphabetical"
+                })
+            }
             //List to show recipes:
             List{
                 ForEach(self.$recipeSearchResults) { (recipeModel) in
@@ -50,7 +149,6 @@ struct CookbookViewWithoutNavigation: View {
                         .listRowSeparator(.hidden)
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onChange(of: searchText) { searchText in
                 if !searchText.isEmpty {
                     recipeSearchResults = recipes.filter { $0.name.contains(searchText) }

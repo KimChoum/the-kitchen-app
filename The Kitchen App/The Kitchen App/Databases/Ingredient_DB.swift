@@ -229,4 +229,38 @@ class Ingredient_DB{
         return Array(shoppingList)
     }
     
+    //find if all ingredients for a recipe are in stock
+    public func allInStock(allIngredientIDs: [String]) -> Bool{
+        var allInStock: Bool = true
+        do{
+            for idValue in allIngredientIDs {
+                for ingredient in try db.prepare(ingredients.where(id == idValue)){
+                    if(ingredient[inStock] == false){
+                        allInStock = false
+                    }
+                }
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return allInStock
+    }
+    
+    //find if 3 or less items for a recipe are not in stock
+    public func threeOrLess(allIngredientIDs: [String]) -> Bool{
+        var threeOrLessCount = 0;
+        do{
+            for idValue in allIngredientIDs {
+                for ingredient in try db.prepare(ingredients.where(id == idValue)){
+                    if(ingredient[inStock] == false){
+                        threeOrLessCount = threeOrLessCount+1
+                    }
+                }
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return threeOrLessCount<=3&&threeOrLessCount>0 ? true : false
+    }
+    
 }
