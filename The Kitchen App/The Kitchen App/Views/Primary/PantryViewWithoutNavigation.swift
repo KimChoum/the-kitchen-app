@@ -22,12 +22,61 @@ struct PantryViewWithoutNavigation: View {
     
     //to search ingredients
     @State private var searchText: String = ""
+    @State private var isEditing: Bool = false
     @State var ingredientSearchResults: [Ingredient] = []
     
     @Binding var shouldPopToRootView : Bool
     
     var body: some View {
         VStack{
+            HStack{
+                Text("Ingredients")
+                    .font(.system(size: 40, weight: .bold, design: .default))
+                    .padding()
+                Spacer()
+                NavigationLink (destination: AddIngredientView(), label: {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .accentColor(.blue)
+                        .padding()
+                })
+            }
+            //search bar
+            HStack {
+                TextField("Search...", text: $searchText)
+                    .padding(7)
+                    .padding(.horizontal, 25)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .onChange(of: searchText) { searchText in
+                        if !searchText.isEmpty {
+                            ingredientSearchResults = ingredients.filter { $0.name.contains(searchText) }
+                        } else {
+                            ingredientSearchResults = ingredients
+                        }
+                    }
+                    .overlay(HStack { // Add the search icon to the left
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 8)
+
+                        // If the search field is focused, add the clear (X) button
+                        if isEditing {
+                            Button(action: {
+                                self.searchText = ""
+                            }) {
+                                Image(systemName: "multiply.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 8)
+                            }
+                        }
+                    }).padding(.horizontal, 10)
+                    .onTapGesture {
+                        self.isEditing = true
+                    }
+            }
             List{
                 ForEach($ingredientSearchResults){ ingredientModel in
                     //print each ingredient
@@ -36,7 +85,6 @@ struct PantryViewWithoutNavigation: View {
                         .listRowSeparator(.hidden)
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .onChange(of: searchText) { searchText in
 
                 if !searchText.isEmpty {
@@ -113,19 +161,7 @@ struct PantryViewWithoutNavigation: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(Text("Ingredients"))
-        .navigationBarItems(trailing:
-                                HStack{
-                                    Spacer()
-                                    //Add ingredient link
-            NavigationLink (destination: AddIngredientView(), label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .accentColor(.blue)
-                    .padding(.trailing, 5)
-                                    })}
-                            )
+        .navigationBarHidden(true)
     }
 }
 

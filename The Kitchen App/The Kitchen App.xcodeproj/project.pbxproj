@@ -231,8 +231,6 @@
 				D533E76627E1986A00AA9B52 /* Primary */,
 				D533E76727E198B500AA9B52 /* Add+Edit DB */,
 				D51A60AB27E6274500EF777C /* Templates */,
-				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
-				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -243,6 +241,8 @@
 				D533E76A27E19A4500AA9B52 /* CookbookViewWithoutNavigation.swift */,
 				D533E76C27E19A9900AA9B52 /* ShoppingListViewWithoutNavigation.swift */,
 				D533E76827E1997200AA9B52 /* PantryViewWithoutNavigation.swift */,
+				D5A0CE4727CEF7B300CA1F7B /* ViewIngredientView.swift */,
+				D5A0CE3C27C97C8E00CA1F7B /* viewRecipeView.swift */,
 			);
 			path = Primary;
 			sourceTree = "<group>";

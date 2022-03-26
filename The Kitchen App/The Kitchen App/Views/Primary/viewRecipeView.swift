@@ -17,6 +17,7 @@ struct CheckboxToggleStyle: ToggleStyle {
       HStack {
         Image(systemName: configuration.isOn ? "checkmark.\(style.sfSymbolName).fill" : style.sfSymbolName)
           .imageScale(.large)
+          .foregroundColor(configuration.isOn ? .green : .black)
         configuration.label
       }
     }).buttonStyle(PlainButtonStyle()) // remove any implicit styling from the button
@@ -115,7 +116,7 @@ struct viewRecipeView: View {
                     .listStyle(.plain)
                 }
                 .background(Color(.white))
-                .padding(.top, 150)
+                .padding(.top, 110)
             }
             //populate instructions and ingredient variables
             .onAppear(perform: {

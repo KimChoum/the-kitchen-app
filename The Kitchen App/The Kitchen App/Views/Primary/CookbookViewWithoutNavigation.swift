@@ -27,7 +27,7 @@ struct CookbookViewWithoutNavigation: View {
     @State var recipeSearchResults: [Recipe] = []
     @State var isEditing: Bool = false
     //sorting:
-    @State var selectedSort: String = "alphabetical"
+    @State var selectedSort: String = "all"
     
     //for navigation:
     @Binding var shouldPopToRootView : Bool
@@ -85,13 +85,13 @@ struct CookbookViewWithoutNavigation: View {
             //sorting
             ScrollView(.horizontal, showsIndicators: false){
                 HStack{
-                    Text("Alphabetical")
+                    Text("All")
                         .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
-                        .background(Color(self.selectedSort == "alphabetical" ? .systemGray2 : .systemGray6))
+                        .background(Color(self.selectedSort == "all" ? .systemGray2 : .systemGray6))
                         .cornerRadius(15)
                         .foregroundColor(.black)
                         .onTapGesture {
-                            self.selectedSort = "alphabetical"
+                            self.selectedSort = "all"
                             recipeSearchResults = recipes
                         }
                         .padding(.leading, 5)
