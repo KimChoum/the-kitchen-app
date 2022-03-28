@@ -183,7 +183,6 @@ class Ingredient_DB{
     //function to update Ingredient
     public func updateIngredient(idValue: String, nameValue: String, inStockValue: Bool, categoryValue: String, keepInStockValue: Bool){
         do{
-            print(keepInStockValue)
             //get ingredient
             let ingredient: Table = ingredients.filter(id == idValue)
             

@@ -72,6 +72,17 @@ class Recipe_DB{
         }
     }
     
+    //update recipe in database
+    public func updateRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String){
+        do{
+            let recipe: Table = recipes.filter(id == recipeIDValue)
+            
+            try db.run(recipe.update(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue))
+        } catch{
+            print(error.localizedDescription)
+        }
+    }
+    
     
     //return array of recipes
     public func getRecipes() -> [Recipe] {
@@ -116,6 +127,7 @@ class Recipe_DB{
                 recipeReturn.instructions = recipe[instructions]
                 recipeReturn.onShoppingList = recipe[onShoppingList]
                 recipeReturn.id = UUID(uuidString: recipeIDValue)!
+                recipeReturn.mealType = recipe[mealType]
             }
         }catch{
             print(error.localizedDescription)
@@ -165,9 +177,26 @@ class Recipe_DB{
         return listOfRecipes
     }
     
-    //function to return number of recipes in database you can currently make
-    public func getRecipesCanMake(){
-        //TODO
+    //get recipes from list of recipe IDs
+    public func getRecipesFromIDs(recipeIDS: [String]) -> [Recipe]{
+        var listOfRecipes: [Recipe] = []
+        let recipeReturn: Recipe = Recipe()
+        
+        for recipeId in recipeIDS {
+            do{
+                for recipe in try db.prepare(recipes.where(id == recipeId)){
+                    recipeReturn.name = recipe[name]
+                    recipeReturn.instructions = recipe[instructions]
+                    recipeReturn.onShoppingList = recipe[onShoppingList]
+                    recipeReturn.id = UUID(uuidString: recipeId)!
+                    recipeReturn.mealType = recipe[mealType]
+                    listOfRecipes.append(recipeReturn)
+                }
+            }catch{
+                print(error.localizedDescription)
+            }
+        }
+        return listOfRecipes
     }
     
 }

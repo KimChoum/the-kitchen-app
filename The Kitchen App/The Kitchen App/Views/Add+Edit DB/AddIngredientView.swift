@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddIngredientView: View {
     
-    let catagories = ["None", "Produce", "Dairy/Eggs", "Meat", "Bakery", "Canned Goods", "Baking", "Frozen", "Bulk", "Snack Foods", "Spices/Seasonings", "Pasta/Rice", "Drinks", "Liquor", "Condiments"]
+    let catagories = ["None", "Produce", "Dairy/Eggs", "Meat", "Breads", "Canned Goods", "Baking", "Frozen", "Bulk", "Snack Foods", "Spices/Seasonings", "Pasta/Rice", "Drinks", "Liquor", "Condiments"]
     //vars to hold user input:
     @State var name: String = ""
     @State var inStock: Bool = false

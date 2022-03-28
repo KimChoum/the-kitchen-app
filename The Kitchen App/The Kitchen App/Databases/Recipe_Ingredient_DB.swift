@@ -99,12 +99,25 @@ class Recipe_Ingredient_DB{
         return ingredientsList
     }
     
+    //Get list of recipesIDs that use a given ingredient
+    public func getRecipesThatUseIngredient(ingredientIDValue: String) -> [String]{
+        var recipeList: [String] = []
+        
+        do{
+            for recipe_ingredient_item in try db.prepare(recipe_ingredient.where(ingredientID == ingredientIDValue)){
+                recipeList.append(recipe_ingredient_item[recipeID])
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        return recipeList
+    }
+    
     
     
     //function to delete all recipe->ingredient relations for a given RECIPE
     public func deleteRecipe(recipeIDValue: String){
         do{
-            //for recipe_ingredient_row in try db.prepare(recipe_ingredient.where(recipeName == recipeNameValue)) {
             let recipe_ingredient_table: Table = recipe_ingredient.filter(recipeID == recipeIDValue)
             try db.run(recipe_ingredient_table.delete())
         }catch{

@@ -38,7 +38,7 @@ struct CheckboxToggleStyle: ToggleStyle {
 }
 
 struct viewRecipeView: View {
-    //Name of recipe recived from revious view
+    //Recipe recived from revious view
     @Binding var recipe: Recipe
     
     //file manager instance for getting image
@@ -57,7 +57,7 @@ struct viewRecipeView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
         ZStack(alignment: .top) {
-            Image(uiImage: fileManager.getImage(imageName: recipe.id.uuidString, folderName: "recipeImages") ?? UIImage(named: "test-recipe-image")!)
+            Image(uiImage: recipe.image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(maxHeight: 250)
@@ -124,10 +124,12 @@ struct viewRecipeView: View {
                 //populate on screen
                 recipe.ingredients = listOfIngredients
                 self.onShoppingList = recipe.onShoppingList
+                recipe.image = fileManager.getImage(imageName: recipe.id.uuidString, folderName: "recipeImages") ?? UIImage(named: "test-recipe-image")!
             })
             .navigationBarItems(trailing:
                                     HStack{
                 Spacer()
+                NavigationLink(destination: EditRecipeView(recipe: $recipe), label: {Text("Edit")})
                 Button("Delete") {
                     showingAlert = true
                 }
