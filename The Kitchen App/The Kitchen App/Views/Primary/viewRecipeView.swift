@@ -108,7 +108,7 @@ struct viewRecipeView: View {
                     List{
                         ForEach(self.$recipe.ingredients, id: \.id){ ingredientModel in
                             //print each ingredient
-                            CardListRow(item: ingredientModel)
+                            CardListRowNoDelete(item: ingredientModel)
                                 .listRowSeparator(.hidden)
                         }
                     }
