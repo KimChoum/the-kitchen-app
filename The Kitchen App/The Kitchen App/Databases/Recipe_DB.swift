@@ -23,6 +23,7 @@ class Recipe_DB{
     private var onShoppingList: Expression<Bool>!
     private var id: Expression<String>!
     private var mealType: Expression<String>!
+    private var link: Expression<String>!
     //private var ingredients: Expression<[Ingredient]>!
     
     init(){
@@ -43,6 +44,7 @@ class Recipe_DB{
             instructions = Expression<String>("instructions")
             onShoppingList = Expression<Bool>("onShoppingList")
             mealType = Expression<String>("mealType")
+            link = Expression<String>("link")
             //if if table already exists:
             if(!UserDefaults.standard.bool(forKey: "is_recipe_db_created")){
                 //case that table does not exist yet
@@ -52,6 +54,7 @@ class Recipe_DB{
                     t.column(instructions)
                     t.column(onShoppingList)
                     t.column(mealType)
+                    t.column(link)
                 })
                 //make is_db_created true so table is not created again
                 UserDefaults.standard.set(true, forKey: "is_recipe_db_created")
@@ -63,21 +66,21 @@ class Recipe_DB{
     }
     
     //Add recipe to database
-    public func addRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String){
+    public func addRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String, recipeLinkValue: String){
         
         do{
-            try db.run(recipes.insert(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue))
+            try db.run(recipes.insert(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue, link <- recipeLinkValue))
         } catch{
             print(error.localizedDescription)
         }
     }
     
     //update recipe in database
-    public func updateRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String){
+    public func updateRecipe(recipeIDValue: String, nameValue: String, instructionsValue: String, mealTypeValue: String, recipeLinkValue: String){
         do{
             let recipe: Table = recipes.filter(id == recipeIDValue)
             
-            try db.run(recipe.update(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue))
+            try db.run(recipe.update(id <- recipeIDValue, name <- nameValue, instructions <- instructionsValue, onShoppingList <- false, mealType <- mealTypeValue, link <- recipeLinkValue))
         } catch{
             print(error.localizedDescription)
         }
@@ -106,6 +109,7 @@ class Recipe_DB{
                 recipeReturn.onShoppingList = recipe[onShoppingList]
                 recipeReturn.id = UUID(uuidString: recipe[id])!
                 recipeReturn.mealType = recipe[mealType]
+                recipeReturn.link = recipe[link]
                 //append object to array
                 recipesList.append(recipeReturn)
             }
@@ -128,6 +132,7 @@ class Recipe_DB{
                 recipeReturn.onShoppingList = recipe[onShoppingList]
                 recipeReturn.id = UUID(uuidString: recipeIDValue)!
                 recipeReturn.mealType = recipe[mealType]
+                recipeReturn.link = recipe[link]
             }
         }catch{
             print(error.localizedDescription)
@@ -160,7 +165,7 @@ class Recipe_DB{
         }
     }
     
-    //Function to return the names of all recipes that currently have onShoppingList = true
+    //Function to return the ids of all recipes that currently have onShoppingList = true
     public func getRecipesOnShoppingList() -> [Recipe]{
         var listOfRecipes: [Recipe] = []
         let recipeToAdd: Recipe = Recipe()
@@ -190,6 +195,7 @@ class Recipe_DB{
                     recipeReturn.onShoppingList = recipe[onShoppingList]
                     recipeReturn.id = UUID(uuidString: recipeId)!
                     recipeReturn.mealType = recipe[mealType]
+                    recipeReturn.link = recipe[link]
                     listOfRecipes.append(recipeReturn)
                 }
             }catch{

@@ -6,35 +6,60 @@
 //
 
 import SwiftUI
+import SafariServices
+
+// SFSafariViewWrapper.swift
+
+struct SFSafariViewWrapper: UIViewControllerRepresentable {
+    let url: URL
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<Self>) -> SFSafariViewController {
+        return SFSafariViewController(url: url)
+    }
+    
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SFSafariViewWrapper>) {
+        return
+    }
+}
+
 
 struct CheckboxToggleStyle: ToggleStyle {
-  let style: Style // custom param
-
-  func makeBody(configuration: Configuration) -> some View {
-    Button(action: {
-      configuration.isOn.toggle() // toggle the state binding
-    }, label: {
-      HStack {
-        Image(systemName: configuration.isOn ? "checkmark.\(style.sfSymbolName).fill" : style.sfSymbolName)
-          .imageScale(.large)
-          .foregroundColor(configuration.isOn ? .green : .black)
-        configuration.label
-      }
-    }).buttonStyle(PlainButtonStyle()) // remove any implicit styling from the button
-  }
-
-  enum Style {
-    case square, circle
-
-    var sfSymbolName: String {
-      switch self {
-      case .square:
-        return "square"
-      case .circle:
-        return "circle"
-      }
+    let style: Style // custom param
+    
+    func makeBody(configuration: Configuration) -> some View {
+        Button(action: {
+            configuration.isOn.toggle() // toggle the state binding
+        }, label: {
+            HStack {
+                Image(systemName: configuration.isOn ? "checkmark.\(style.sfSymbolName).fill" : style.sfSymbolName)
+                    .imageScale(.large)
+                    .foregroundColor(configuration.isOn ? .green : .black)
+                configuration.label
+            }
+        }).buttonStyle(PlainButtonStyle()) // remove any implicit styling from the button
     }
-  }
+    
+    enum Style {
+        case square, circle
+        
+        var sfSymbolName: String {
+            switch self {
+            case .square:
+                return "square"
+            case .circle:
+                return "circle"
+            }
+        }
+    }
+}
+
+func verifyUrl (urlString: String?) -> Bool {
+    if let urlString = urlString {
+        if let url = NSURL(string: urlString) {
+            return UIApplication.shared.canOpenURL(url as URL)
+        }
+    }
+    return false
 }
 
 struct viewRecipeView: View {
@@ -53,6 +78,9 @@ struct viewRecipeView: View {
     //variable that will be updated
     @State var onShoppingList: Bool = false
     
+    //open link to view recipe
+    @State private var showSafari: Bool = false
+    
     //To return to previous view
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     var body: some View {
@@ -70,7 +98,7 @@ struct viewRecipeView: View {
                         .padding(.trailing, 10)
                     if (Ingredient_DB().allInStock(allIngredientIDs: Recipe_Ingredient_DB().getIngredientIDsList(recipeIDValue: recipe.id.uuidString))){
                         HStack{
-                            Text("All ingredient in stock!")
+                            Text("All ingredient in stock")
                             Image(systemName: "checkmark")
                                 .foregroundColor(.green)
                         }
@@ -78,7 +106,7 @@ struct viewRecipeView: View {
                 }
                 .background(Color(.white))
                 .clipShape(RoundedRectangle(cornerRadius: 5))
-                .padding(.top, 73)
+                .padding(.top, 55)
                 .padding(.leading, 5)
                 Spacer()
             }
@@ -94,6 +122,20 @@ struct viewRecipeView: View {
                             .toggleStyle(CheckboxToggleStyle(style: .circle))
                             .padding()
                         Spacer()
+                        if (verifyUrl(urlString: recipe.link)){
+                            Image(systemName: "link")
+                                .frame(width: 32, height: 32)
+                                .background(Color.blue)
+                                .mask(Circle())
+                                .foregroundColor(.white)
+                                .onTapGesture{
+                                        showSafari.toggle()
+                                }
+                                .fullScreenCover(isPresented: $showSafari, content: {
+                                    SFSafariViewWrapper(url: URL(string: recipe.link)!)
+                                })
+                                .padding()
+                        }
                     }
                     Text("Instructions:")
                         .font(.title)

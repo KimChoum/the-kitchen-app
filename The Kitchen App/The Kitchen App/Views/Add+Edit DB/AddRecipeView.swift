@@ -19,6 +19,7 @@ struct AddRecipeView: View {
     @State var ingredients: [Ingredient] = []
     @State var newRecipe: Recipe = Recipe()
     @State var mealType: String = ""
+    @State var link: String = ""
     
     //image vars
     @State private var image = UIImage()
@@ -67,6 +68,14 @@ struct AddRecipeView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                    TextField("link", text: $link)
+                        .padding()
+                        .frame(width: 220, height: 30)
+                        .disableAutocorrection(true)
+                        .background(Color(.white))
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .shadow(radius: 1)
+                        .padding(.leading, 5)
                     Text("Recipe Name:")
                         .font(.title)
                     TextField("name", text: $name)
@@ -91,7 +100,7 @@ struct AddRecipeView: View {
                         }
                     }
                     .shadow(radius: 1)
-                    IngredientMultipleSelectView(recipeName: $name, recipeInstructions: $instructions, recipeImage: $image, recipeMealType: $mealType, ingredients: self.ingredients)
+                    IngredientMultipleSelectView(recipeName: $name, recipeInstructions: $instructions, recipeImage: $image, recipeMealType: $mealType, recipeLink: $link, ingredients: self.ingredients)
                 }
                 .background(Color(.systemGray6))
                 .padding(.top, 120)

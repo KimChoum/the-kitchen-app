@@ -20,6 +20,7 @@ struct EditRecipeView: View {
     @State var mealType: String = ""
     @State var selectedRows = Set<UUID>()
     @State var id: String = ""
+    @State var link: String = ""
     
     //image vars
     @State private var image = UIImage()
@@ -68,6 +69,14 @@ struct EditRecipeView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                    TextField("link", text: $link)
+                        .padding()
+                        .frame(width: 220, height: 30)
+                        .disableAutocorrection(true)
+                        .background(Color(.white))
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .shadow(radius: 1)
+                        .padding(.leading, 5)
                     Text("Recipe Name:")
                         .font(.title)
                     TextField("name", text: $name)
@@ -92,7 +101,7 @@ struct EditRecipeView: View {
                         }
                     }
                     .shadow(radius: 1)
-                    IngredientMultipleSelectUpdateView(recipeName: $name, recipeInstructions: $instructions, recipeImage: $image, recipeMealType: $mealType, selectedRows: $selectedRows, recipeID: $id)
+                    IngredientMultipleSelectUpdateView(recipeName: $name, recipeInstructions: $instructions, recipeImage: $image, recipeMealType: $mealType, selectedRows: $selectedRows, recipeID: $id, recipeLink: $link)
                 }
                 .background(Color(.systemGray6))
                 .padding(.top, 120)
@@ -103,6 +112,7 @@ struct EditRecipeView: View {
             self.recipe.name = self.name
             self.recipe.instructions = self.instructions
             self.recipe.mealType = self.mealType
+            self.recipe.link = self.link
         })
         //.background(Color(.systemGray6))
         .onAppear(perform: {
@@ -112,6 +122,7 @@ struct EditRecipeView: View {
             self.name = recipe.name
             self.image = recipe.image
             self.id = recipe.id.uuidString
+            self.link = recipe.link
             for ingredientModel in recipe.ingredients{
                 selectedRows.insert(ingredientModel.id)
             }

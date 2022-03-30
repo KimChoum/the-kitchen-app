@@ -24,6 +24,7 @@ struct IngredientMultipleSelectView: View {
     @Binding var recipeInstructions: String
     @Binding var recipeImage: UIImage
     @Binding var recipeMealType: String
+    @Binding var recipeLink: String
     
     @State var recipeValue: Recipe = Recipe()
     @State var selectedRows = Set<UUID>()
@@ -100,6 +101,7 @@ struct IngredientMultipleSelectView: View {
                 recipeValue.instructions = recipeInstructions
                 recipeValue.name = recipeName
                 recipeValue.mealType = recipeMealType
+                recipeValue.link = recipeLink
                 
                 //add all selected ingredients to junction table
                 for ingredientValue in ingredients{
@@ -109,7 +111,7 @@ struct IngredientMultipleSelectView: View {
                     }
                 }
                 //call function to add new row in sqlite
-                Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType)
+                Recipe_DB().addRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType, recipeLinkValue: recipeValue.link)
                 self.mode.wrappedValue.dismiss()
             }, label: {
                 Text("Done")
@@ -128,7 +130,8 @@ struct IngredientMultipleSelectView_Previews: PreviewProvider {
     @State static var recipeInstructions: String = ""
     @State static var recipeImage: UIImage = UIImage()
     @State static var recipeMealType: String = ""
+    @State static var recipeLink: String = ""
     static var previews: some View {
-        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, recipeMealType: $recipeMealType, ingredients: [Ingredient()])
+        IngredientMultipleSelectView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, recipeMealType: $recipeMealType, recipeLink: $recipeLink, ingredients: [Ingredient()])
     }
 }

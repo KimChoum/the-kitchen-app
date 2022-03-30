@@ -16,4 +16,5 @@ class Recipe: Identifiable{
     public var onShoppingList: Bool = false
     public var image: UIImage = UIImage(systemName: "photo")!
     public var mealType: String = ""
+    public var link: String = ""
 }

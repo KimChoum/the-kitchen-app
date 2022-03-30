@@ -19,6 +19,7 @@ struct IngredientMultipleSelectUpdateView: View {
     @Binding var recipeMealType: String
     @Binding var selectedRows: Set<UUID>
     @Binding var recipeID: String
+    @Binding var recipeLink: String
     
     @State var recipeValue: Recipe = Recipe()
     @State var ingredients: [Ingredient] = []
@@ -105,7 +106,7 @@ struct IngredientMultipleSelectUpdateView: View {
                     }
                 }
                 //call function to add new row in sqlite
-                Recipe_DB().updateRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType)
+                Recipe_DB().updateRecipe(recipeIDValue: recipeValue.id.uuidString, nameValue: recipeValue.name, instructionsValue: recipeValue.instructions, mealTypeValue: recipeMealType, recipeLinkValue: recipeLink)
                 self.mode.wrappedValue.dismiss()
             }, label: {
                 Text("Done")
@@ -126,7 +127,8 @@ struct IngredientMultipleSelectUpdateView_Previews: PreviewProvider {
     @State static var recipeMealType: String = ""
     @State static var selectedRows = Set<UUID>()
     @State static var recipeID: String = ""
+    @State static var recipeLink: String = ""
     static var previews: some View {
-        IngredientMultipleSelectUpdateView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, recipeMealType: $recipeMealType, selectedRows: $selectedRows, recipeID: $recipeID)
+        IngredientMultipleSelectUpdateView(recipeName: $recipeName, recipeInstructions: $recipeInstructions, recipeImage: $recipeImage, recipeMealType: $recipeMealType, selectedRows: $selectedRows, recipeID: $recipeID, recipeLink: $recipeLink)
     }
 }
